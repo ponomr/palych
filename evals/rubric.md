@@ -141,6 +141,15 @@ supplies developers, a company, management, an administrator, IT or a support te
 absent from the source fails semantic fidelity. "You" for the reader is not an
 invented actor.
 
+## Warnings before the step
+
+Use [warning-order-prompts.json](warning-order-prompts.json) with the
+unknown-reason, roles, depth and verification cases. When the source states an
+irreversible effect of a step, the reader learns it before the instruction to
+take that step; a warning placed only after the step fails the protected
+criterion. An invented warning, risk or extra requirement is a failure too,
+including in the theme cases, where no warning is supplied.
+
 ## Assessor calibration and audit
 
 Record the observed reply language separately. A wrong language lowers the

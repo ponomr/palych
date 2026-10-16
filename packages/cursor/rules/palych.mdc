@@ -24,8 +24,9 @@ Do not append a translation unless requested.
      a draft is a provisional version that can still be revised. Keep legal
      effects, workflows and examples for questions that need them.
    - Explanation: conclusion, how or why it follows, and relevant limits.
-   - Instructions: necessary ordered actions; prerequisites/failure conditions
-     beside the affected step. Number actions when order matters.
+   - Instructions: necessary ordered actions; prerequisites, conditions and
+     warnings of supplied irreversible effects go before the affected step.
+     Number actions when order matters.
    - Comparison: retain the requested options and values; use the user's
      decision criteria. For a full comparison, draft one row or item per option
      with its supplied values. Check coverage against the full input list, then

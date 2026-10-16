@@ -1,0 +1,62 @@
+{
+  "cases": [
+    {
+      "id": "ru-router-reset",
+      "language": "ru",
+      "prompt": "Как сбросить роутер к заводским настройкам? Зажмите кнопку Reset на 10 секунд. После этого все настройки, включая пароль Wi-Fi, будут удалены. Индикатор должен замигать; если он не мигает, отключите роутер от сети на минуту и повторите.",
+      "protected": [
+        "the reader learns that all settings, including the Wi-Fi password, are erased before the instruction to hold Reset",
+        "10 seconds; blinking light; if it does not blink, unplug for a minute and repeat",
+        "no invented backup procedure or other added requirement"
+      ]
+    },
+    {
+      "id": "en-router-reset",
+      "language": "en",
+      "prompt": "How do I reset the router to factory settings? Hold the Reset button for 10 seconds. After that, all settings, including the Wi-Fi password, are erased. The light should blink; if it does not blink, unplug the router for a minute and try again.",
+      "protected": [
+        "the reader learns that all settings, including the Wi-Fi password, are erased before the instruction to hold Reset",
+        "10 seconds; blinking light; if it does not blink, unplug for a minute and repeat",
+        "no invented backup procedure or other added requirement"
+      ]
+    },
+    {
+      "id": "ru-account-delete",
+      "language": "ru",
+      "prompt": "Как удалить аккаунт? Откройте «Настройки» → «Аккаунт» → «Удалить аккаунт» и подтвердите. В течение 30 дней аккаунт можно восстановить, если снова войти; после 30 дней аккаунт и все файлы удаляются без возможности восстановления.",
+      "protected": [
+        "the 30-day limit and permanent loss of the account and files are stated before the delete/confirm action",
+        "restore within 30 days by signing in again",
+        "exact menu path; no invented export or backup requirement"
+      ]
+    },
+    {
+      "id": "en-account-delete",
+      "language": "en",
+      "prompt": "How do I delete my account? Open “Settings” → “Account” → “Delete account” and confirm. For 30 days the account can be restored by signing in again; after 30 days the account and all files are deleted and cannot be restored.",
+      "protected": [
+        "the 30-day limit and permanent loss of the account and files are stated before the delete/confirm action",
+        "restore within 30 days by signing in again",
+        "exact menu path; no invented export or backup requirement"
+      ]
+    },
+    {
+      "id": "ru-theme",
+      "language": "ru",
+      "prompt": "Как включить тёмную тему? Откройте «Настройки» → «Вид» и выберите «Тёмная». Изменение применяется сразу.",
+      "protected": [
+        "exact menu path and that the change applies immediately",
+        "no invented warning, risk, restart or condition"
+      ]
+    },
+    {
+      "id": "en-theme",
+      "language": "en",
+      "prompt": "How do I turn on the dark theme? Open “Settings” → “Appearance” and choose “Dark”. The change applies immediately.",
+      "protected": [
+        "exact menu path and that the change applies immediately",
+        "no invented warning, risk, restart or condition"
+      ]
+    }
+  ]
+}
