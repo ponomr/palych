@@ -1,0 +1,98 @@
+{
+  "cases": [
+    {
+      "id": "ru-letter",
+      "language": "ru",
+      "prompt": "Напиши письмо клиенту Ивану Петрову: заказ № 4821 задерживается, доставка переносится с 12 на 15 ноября, причина — задержка у поставщика. Письмо от Анны из отдела доставки.",
+      "protected": [
+        "order 4821",
+        "delivery moved from 12 to 15 November",
+        "supplier delay as the reason",
+        "signed by Anna, delivery department",
+        "only the letter: no lead-in before it and no comment or offer after it"
+      ]
+    },
+    {
+      "id": "en-letter",
+      "language": "en",
+      "prompt": "Write an email in English to our customer John Miller: order 4821 is delayed, delivery moves from 12 to 15 November because of a supplier delay. The email is from Anna in the delivery team.",
+      "protected": [
+        "order 4821",
+        "delivery moved from 12 to 15 November",
+        "supplier delay as the reason",
+        "signed by Anna, delivery team",
+        "only the email: no lead-in before it and no comment or offer after it"
+      ]
+    },
+    {
+      "id": "ru-chat",
+      "language": "ru",
+      "prompt": "Напиши от моего имени сообщение Марине в Telegram: созвон в четверг переносится с 11:00 на 15:00, ссылка остаётся прежней.",
+      "protected": [
+        "Thursday call",
+        "moved from 11:00 to 15:00",
+        "same link",
+        "only the message: no lead-in before it and no comment or offer after it"
+      ]
+    },
+    {
+      "id": "en-chat",
+      "language": "en",
+      "prompt": "Write a Telegram message in English from me to Marina: Thursday's call moves from 11:00 to 15:00, the link stays the same.",
+      "protected": [
+        "Thursday call",
+        "moved from 11:00 to 15:00",
+        "same link",
+        "only the message: no lead-in before it and no comment or offer after it"
+      ]
+    },
+    {
+      "id": "ru-commit",
+      "language": "ru",
+      "prompt": "Напиши сообщение коммита на русском. Изменение: итоговая сумма счёта теперь округляется до копеек один раз, после сложения строк, а не в каждой строке; из-за этого суммы расходились на 1–2 копейки. Заголовок начни с `invoice:`, в конце добавь трейлер `Refs: #214`.",
+      "protected": [
+        "subject starts with invoice:",
+        "rounding to kopecks once, after the lines are added",
+        "totals differed by 1–2 kopecks",
+        "ends with the trailer Refs: #214",
+        "only the commit message: no lead-in before it and no comment or offer after it"
+      ]
+    },
+    {
+      "id": "en-commit",
+      "language": "en",
+      "prompt": "Write a commit message in English. Change: the invoice total is now rounded to cents once, after the lines are added, instead of on every line; this made totals differ by 1–2 cents. Start the subject with `invoice:` and end with the trailer `Refs: #214`.",
+      "protected": [
+        "subject starts with invoice:",
+        "rounding to cents once, after the lines are added",
+        "totals differed by 1–2 cents",
+        "ends with the trailer Refs: #214",
+        "only the commit message: no lead-in before it and no comment or offer after it"
+      ]
+    },
+    {
+      "id": "ru-notice",
+      "language": "ru",
+      "prompt": "Составь объявление для жильцов с заголовком «Отключение горячей воды»: 5 ноября с 9:00 до 18:00 горячей воды не будет из-за ремонта трубы в подвале. Подпись: управляющая компания «Дом-Сервис».",
+      "protected": [
+        "title Отключение горячей воды",
+        "5 November, 9:00 to 18:00",
+        "pipe repair in the basement",
+        "signed by Дом-Сервис",
+        "only the notice: no lead-in before it and no comment or offer after it"
+      ]
+    },
+    {
+      "id": "en-notice",
+      "language": "en",
+      "prompt": "Write a notice in English for residents titled “Hot Water Shut-Off”: on 5 November from 9:00 to 18:00 there will be no hot water because of a pipe repair in the basement. Sign it: Home Service property management.",
+      "protected": [
+        "title Hot Water Shut-Off",
+        "5 November, 9:00 to 18:00",
+        "pipe repair in the basement",
+        "signed by Home Service property management",
+        "only the notice: no lead-in before it and no comment or offer after it"
+      ]
+    }
+  ]
+}

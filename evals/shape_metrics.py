@@ -25,6 +25,16 @@ Per reply:
   question, question_last says the reply ends with one, and after_question
   counts the words that follow the last one.
 
+For a case that asks for a ready text (a letter, a message, a commit message),
+the key file's deliverables entry gives patterns for the text's first and last
+words. Fence lines are ignored, so a text inside a code block counts as the text.
+
+- lead_in: words before the first start match;
+- tail: words after the last end match; absent when the case has no end pattern;
+- pure_text: no lead-in and, where the end is known, no tail. A closing offer
+  after a text without fixed last words shows only in closer, which also flags
+  a "let me know" inside the text itself, so read those replies.
+
 A pattern locates the point; it does not check that the point is correct.
 Shape numbers are proxies for scanning, not evidence of reader comprehension.
 
@@ -46,6 +56,7 @@ HEADING = re.compile(r'^\s{0,3}#{1,6}\s')
 ITEM = re.compile(r'^\s*(?:[-*+•]|\d+[.)])\s+')
 TABLE = re.compile(r'^\s*\|')
 SENTENCE_END = re.compile(r'[.!?…](?=["»)\]*_]*(?:\s|$))')
+FENCE_LINE = re.compile(r'^\s*```.*$', re.M)
 QUESTION = re.compile(r'\?(?=["»)\]*_]*(?:\s|$))')
 LABEL_LINE = re.compile(r'^\s*\*\*[^*]*[^*.!?…]\*\*:?\s*$')
 LEAD_LABEL = re.compile(r'\*\*(?:\W*\w+){1,3}\W*\*\*')
@@ -117,7 +128,23 @@ def first_sentence_span(text):
     return 0, 0
 
 
-def measure(text, key=None):
+def wrapping(text, spec):
+    """Words around a requested ready text, located by its start and end patterns."""
+    plain = FENCE_LINE.sub('', text)
+    start = re.search(spec['start'], plain)
+    if not start:
+        return {'text_found': False}
+    row = {'text_found': True, 'lead_in': words(plain[:start.start()])}
+    if spec.get('end'):
+        ends = list(re.finditer(spec['end'], plain[start.start():]))
+        if not ends:
+            return {'text_found': False}
+        row['tail'] = words(plain[start.start() + ends[-1].end():])
+    row['pure_text'] = not row['lead_in'] and not row.get('tail')
+    return row
+
+
+def measure(text, key=None, deliverable=None):
     prose = FENCE.sub(' ', text)
     lines = [line for line in prose.splitlines() if line.strip() and not HEADING.match(line)]
     start, end = first_sentence_span(prose)
@@ -142,6 +169,8 @@ def measure(text, key=None):
         row['to_point'] = words(prose[:found.start()]) if found else words(prose)
         row['point_found'] = bool(found)
         row['point_first'] = bool(found and found.start() < end)
+    if deliverable:
+        row.update(wrapping(text, deliverable))
     return row
 
 
@@ -150,6 +179,11 @@ def bury(text, language):
     flat = ' '.join(ITEM.sub('', line).strip() for line in text.splitlines()
                     if line.strip() and not HEADING.match(line))
     return WARM_UP[language] + '\n\n' + flat
+
+
+def share_positive(rows, field):
+    values = [r[field] for r in rows if field in r]
+    return round(sum(v > 0 for v in values) / len(values), 3) if values else None
 
 
 def summarize(rows):
@@ -179,20 +213,26 @@ def summarize(rows):
         'asked': round(len(asked) / len(rows), 3),
         'question_last': share('question_last'),
         'after_question': median('after_question'),
+        'texts': sum(bool(r.get('text_found')) for r in rows),
+        'text_missed': sum('text_found' in r and not r['text_found'] for r in rows),
+        'pure_text': share('pure_text'),
+        'lead_in': share_positive(rows, 'lead_in'),
+        'tail': share_positive(rows, 'tail'),
     }
 
 
-def evaluate(records, keys, control=None, split=None):
+def evaluate(records, keys, control=None, split=None, deliverables=None):
     rows = []
     for record in records:
         language = record['case_id'].split('-', 1)[0]
         key = keys.get(record['case_id'])
+        deliverable = (deliverables or {}).get(record['case_id'])
         variants = [(record['condition'], record['response'])]
         if record['condition'] == control:
             variants.append((control + '+buried', bury(record['response'], language)))
         for condition, text in variants:
             group = {'language': language, 'case': record['case_id']}.get(split)
-            rows.append(((condition, group), measure(text, key)))
+            rows.append(((condition, group), measure(text, key, deliverable)))
     groups = {}
     for label, row in rows:
         groups.setdefault(label, []).append(row)
@@ -213,9 +253,10 @@ def main():
     args = parser.parse_args()
 
     records = json.loads(Path(args.responses).read_text(encoding='utf-8'))
-    keys = json.loads(Path(args.keys).read_text(encoding='utf-8'))['keys']
+    key_file = json.loads(Path(args.keys).read_text(encoding='utf-8'))
+    keys = key_file['keys']
     unknown = sorted({r['case_id'] for r in records} - set(keys))
-    results = evaluate(records, keys, args.control, args.split)
+    results = evaluate(records, keys, args.control, args.split, key_file.get('deliverables'))
     meta = {'responses_sha256': digest(args.responses), 'keys_sha256': digest(args.keys),
             'cases_without_key_entry': unknown}
     if args.json:

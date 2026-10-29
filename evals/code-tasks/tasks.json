@@ -1,0 +1,45 @@
+{
+  "note": "Small Python tasks for checking that Palych does not hurt agent work. The agent gets only the files in start/ and the prompt; hidden/ holds the tests run after it finishes, reference/ a solution that passes them. Every behavior a hidden test checks is stated in the prompt.",
+  "tasks": [
+    {
+      "id": "durations",
+      "language": "en",
+      "prompt": "Implement parse_duration(text) in durations.py. It takes a duration like \"1h30m\" and returns whole seconds as an int. The format is one or more parts <digits><unit> with units h, m and s, in that order, each unit at most once, nothing else: no spaces, signs or decimals. A part may exceed its usual range (\"90m\" is 5400). Raise ValueError for anything else, including an empty string. Visible tests: python3 -m unittest test_visible."
+    },
+    {
+      "id": "chunks",
+      "language": "ru",
+      "prompt": "В chunks.py функция chunk(items, size) теряет последний неполный кусок: chunk([1, 2, 3, 4, 5], 2) должна вернуть [[1, 2], [3, 4], [5]]. Исправь. Требования: результат всегда список списков, даже если на вход пришёл кортеж; пустой вход даёт []; size меньше 1 — ValueError. Видимые тесты: python3 -m unittest test_visible."
+    },
+    {
+      "id": "median",
+      "language": "en",
+      "prompt": "median(values) in stats.py is wrong for an even number of values: it must return the mean of the two middle values, so [1, 2, 3, 4] gives 2.5. Fix it. Also: it must not change the caller's list, it must accept any sequence including a tuple, and an empty input raises ValueError. Visible tests: python3 -m unittest test_visible."
+    },
+    {
+      "id": "intervals",
+      "language": "ru",
+      "prompt": "Реализуй merge_intervals(intervals) в intervals.py. На входе пары (start, end) в любом порядке, это могут быть кортежи или списки. Верни отсортированный список кортежей, где пересекающиеся интервалы и интервалы, которые касаются концами ((1, 3) и (3, 4)), объединены. Интервал (2, 2) допустим. Если в паре start больше end — ValueError. Пустой вход даёт []. Видимые тесты: python3 -m unittest test_visible."
+    },
+    {
+      "id": "csvline",
+      "language": "en",
+      "prompt": "Implement parse_csv_line(line) in csvline.py without the csv module. Fields are separated by commas. A field that starts with a double quote is quoted: it ends at the closing quote, a doubled quote \"\" inside it is one literal quote, and the closing quote must be followed by a comma or the end of the line. A quote inside an unquoted field is an ordinary character. Spaces are kept as they are. An empty line is one empty field, and a trailing comma adds an empty field. An unterminated quote or text after a closing quote raises ValueError. Visible tests: python3 -m unittest test_visible."
+    },
+    {
+      "id": "business_days",
+      "language": "ru",
+      "prompt": "business_days(start, end) в workdays.py считает неправильно. Нужно число рабочих дней с понедельника по пятницу в полуинтервале [start, end): start считается, end нет. Суббота и воскресенье не рабочие. Если start == end, ответ 0; если start позже end — ValueError. Исправь. Видимые тесты: python3 -m unittest test_visible."
+    },
+    {
+      "id": "format_bytes",
+      "language": "en",
+      "prompt": "Implement format_bytes(n) in sizes.py for a non-negative int number of bytes. Below 1024 return \"<n> B\". Otherwise use the largest of KB, MB, GB, TB (base 1024) in which the value is at least 1, rounded to one decimal place with a trailing \".0\" dropped: 1536 is \"1.5 KB\", 1024 is \"1 KB\". If rounding gives 1024 of a unit and a larger unit exists, use the larger unit instead (1048575 is \"1 MB\"). TB is the largest unit, so 1024 ** 5 is \"1024 TB\". A negative n raises ValueError. Visible tests: python3 -m unittest test_visible."
+    },
+    {
+      "id": "slug",
+      "language": "ru",
+      "prompt": "slugify(title) в slug.py оставляет кириллицу и подчёркивания и не ограничивает длину. Исправь так: после перевода в нижний регистр сохраняются только латинские буквы a–z и цифры; каждая последовательность других символов превращается в один дефис; дефисов в начале и в конце нет; если результат длиннее 40 символов, он обрезается до 40, а дефис на конце убирается; если ничего не осталось — ValueError. Видимые тесты: python3 -m unittest test_visible."
+    }
+  ]
+}

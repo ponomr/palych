@@ -44,6 +44,20 @@ metrics must score worse. It also counts questions: the share of replies that
 ask one, whether the reply ends with its question and how many words follow the
 last question. Shape numbers are not reader comprehension.
 
+The [ready-text set](deliverable-prompts.json) has eight synthetic RU/EN cases
+that ask for a letter, a chat message, a commit message or a notice. It checks
+that the reply is the text itself, with no lead-in before it and no comment or
+offer after it. `answer-keys.json` gives each case patterns for the text's first
+and last words; `shape_metrics.py` reports `lead_in`, `tail` and `pure_text`.
+
+The [coding tasks](code-tasks/tasks.json) check that Palych does not hurt agent
+work: eight small Python tasks, half of them bug fixes, with visible tests for the
+agent and hidden tests kept back. `code_tasks.py prepare` copies a task into an
+empty folder; `code_tasks.py score` runs the hidden and visible tests on a copy
+of the agent's folder. Every behavior a hidden test checks is stated in the
+task's prompt, and `test_code_tasks.py` checks that the starting files fail the
+hidden tests and the reference solution passes them.
+
 The [repetition set](repetition-prompts.json) checks semantic duplicates,
 unambiguous referents and repetitive colon links. Use it alongside detailed
 process, full-comparison and exact-condition cases; shortening cannot hide
