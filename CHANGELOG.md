@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Core: when work waits on the reader's answer, a progress or error reply
+  names the needed decision in the first sentence and asks the question once,
+  as the last sentence (pilot of 2026-10-29 in the development log).
 - `mods/palych-toggle` is in the Claude Code marketplace as
   `palych-toggle@palych`; `scripts/build_packages.py` adds it to
   `.claude-plugin/marketplace.json` from the mod's own manifest. INSTALL.md

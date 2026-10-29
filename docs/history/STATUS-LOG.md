@@ -1,5 +1,43 @@
 # Palych — dated development records
 
+## Blocking-question rule integrated — 2026-10-29
+
+Question: when work waits on the reader's answer, does a rule in the
+Progress/error item put the needed decision first and end with one question?
+60 replies, Sonnet 5.5, Claude Code 2.1.312, 3 repetitions, no retries; cases
+from `main` c8d7ee0 with the reply language named. Current core SHA-256
+`97c69a6f…97d7`, candidate `378fa190…bcd8`, keys `4a9debe5…e58e`, responses
+`93aa9e70…c9f8`.
+
+Added sentence: "When work waits on the reader's answer, name the needed
+decision in the first sentence without asking it there; ask the question once,
+as the last sentence."
+
+| 18 blocking replies per condition | Current core | Candidate |
+|---|---:|---:|
+| Decision named in the first sentence | 1 | 18 |
+| Reply ends with a question | 5 | 18 |
+| No question at all | 6 | 0 |
+| First sentence already a question | 0 | 0 |
+| More than one question | 0 | 0 |
+
+- An earlier wording ("name the decision in the first sentence; end with that
+  one question") was piloted the same day on the old cases without a reply
+  language: decision first in 16 of 18, but the first sentence was already the
+  question in 7 and the question was asked twice in 3.
+- The 12 non-blocking replies per condition asked no question.
+- English replies in Russian: 0 of 30.
+- Visible words over all 30 replies: 1648 current, 1521 candidate (−8%).
+  `output_tokens`: 3757 against 5252 (+40%); the reason is unknown.
+- Unsupported additions remain in the date case: the candidate added a plan for
+  after the answer in 2 of 6 replies and said the mailing cannot be recalled in 1;
+  the current core added plans in all 6. No invented options in either condition.
+- One reader, who also wrote the cases and the candidate, checked all 36
+  blocking replies; the counts match `shape_metrics.py` and the question
+  checks. This is reply shape, not reader comprehension.
+- Output: `~/ai-hub/outputs/2026-10-29-palych-blocking-question-v3/`
+  (first wording: `…-blocking-question/`).
+
 ## Reply language in English eval cases — 2026-10-29
 
 Question: why did 16 of 30 English blocking-question replies come back in Russian?
