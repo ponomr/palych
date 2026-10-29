@@ -3,7 +3,7 @@
     {
       "id": "ru-label-progress",
       "language": "ru",
-      "prompt": "Контекст сессии: план из четырёх шагов — 1) сделать резервную копию базы, 2) применить миграцию, 3) перестроить поисковый индекс, 4) очистить кэш. Шаги 1 и 2 выполнены. Шаг 3 завершился ошибкой `index lock timeout`, шаг 4 не запускался. Причина ошибки неизвестна. Напиши пользователю сообщение о ходе работы.",
+      "prompt": "Контекст сессии: план из четырёх шагов — 1) сделать резервную копию базы, 2) применить миграцию, 3) перестроить поисковый индекс, 4) очистить кэш. Шаги 1 и 2 выполнены. Шаг 3 завершился ошибкой `index lock timeout`, шаг 4 не запускался. Причина ошибки неизвестна. Напиши пользователю сообщение о ходе работы на русском.",
       "protected": [
         "each step is identified by its content, not only by its number: backup and migration done, search index rebuild failed, cache clearing not run",
         "exact error `index lock timeout`",
@@ -14,7 +14,7 @@
     {
       "id": "en-label-progress",
       "language": "en",
-      "prompt": "Session context: a four-step plan — 1) back up the database, 2) apply the migration, 3) rebuild the search index, 4) clear the cache. Steps 1 and 2 are done. Step 3 failed with the error `index lock timeout`; step 4 did not run. The cause of the error is unknown. Write the progress message to the user.",
+      "prompt": "Session context: a four-step plan — 1) back up the database, 2) apply the migration, 3) rebuild the search index, 4) clear the cache. Steps 1 and 2 are done. Step 3 failed with the error `index lock timeout`; step 4 did not run. The cause of the error is unknown. Write the progress message to the user in English.",
       "protected": [
         "each step is identified by its content, not only by its number: backup and migration done, search index rebuild failed, cache clearing not run",
         "exact error `index lock timeout`",
@@ -25,7 +25,7 @@
     {
       "id": "ru-label-decision",
       "language": "ru",
-      "prompt": "Контекст сессии: пользователь сравнил два варианта. Вариант 1 — хранить логи 30 дней на своём сервере. Вариант 2 — отправлять логи в облачный сервис за 40 $ в месяц. Пользователь ответил: «делаем вариант 2». Ты настроил отправку логов, тестовое сообщение дошло до сервиса. Напиши итоговый отчёт.",
+      "prompt": "Контекст сессии: пользователь сравнил два варианта. Вариант 1 — хранить логи 30 дней на своём сервере. Вариант 2 — отправлять логи в облачный сервис за 40 $ в месяц. Пользователь ответил: «делаем вариант 2». Ты настроил отправку логов, тестовое сообщение дошло до сервиса. Напиши итоговый отчёт на русском.",
       "protected": [
         "the chosen option is identified by its content (logs sent to a cloud service, 40 $ per month), not only as «вариант 2»",
         "only delivery of one test message is verified",
@@ -35,7 +35,7 @@
     {
       "id": "en-label-decision",
       "language": "en",
-      "prompt": "Session context: the user compared two options. Option 1 — keep logs for 30 days on their own server. Option 2 — send logs to a cloud service for $40 a month. The user replied: “go with option 2”. You set up log shipping, and a test message reached the service. Write the final report.",
+      "prompt": "Session context: the user compared two options. Option 1 — keep logs for 30 days on their own server. Option 2 — send logs to a cloud service for $40 a month. The user replied: “go with option 2”. You set up log shipping, and a test message reached the service. Write the final report in English.",
       "protected": [
         "the chosen option is identified by its content (logs sent to a cloud service, $40 a month), not only as “option 2”",
         "only delivery of one test message is verified",

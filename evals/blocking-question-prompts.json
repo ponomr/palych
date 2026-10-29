@@ -3,7 +3,7 @@
     {
       "id": "ru-block-currency",
       "language": "ru",
-      "prompt": "Контекст сессии: задача — перенести 1200 заказов из старой базы в новую. Перенесено 1180. У 20 заказов в поле `currency` стоит значение `RUR`, которого нет в справочнике новой базы. Есть два варианта: заменить `RUR` на `RUB` или оставить эти 20 заказов в старой базе. Продолжить без решения пользователя нельзя. Напиши пользователю сообщение о ходе работы.",
+      "prompt": "Контекст сессии: задача — перенести 1200 заказов из старой базы в новую. Перенесено 1180. У 20 заказов в поле `currency` стоит значение `RUR`, которого нет в справочнике новой базы. Есть два варианта: заменить `RUR` на `RUB` или оставить эти 20 заказов в старой базе. Продолжить без решения пользователя нельзя. Напиши пользователю сообщение о ходе работы на русском.",
       "protected": [
         "the first sentence tells the reader that a decision is needed and what it is about",
         "the reply ends with that one question; nothing follows it",
@@ -15,7 +15,7 @@
     {
       "id": "en-block-currency",
       "language": "en",
-      "prompt": "Session context: the task is to move 1200 orders from the old database to the new one. 1180 are moved. 20 orders have `RUR` in the `currency` field, and the new database's reference list has no such value. There are two options: replace `RUR` with `RUB`, or leave these 20 orders in the old database. The work cannot continue without the user's decision. Write the progress message to the user.",
+      "prompt": "Session context: the task is to move 1200 orders from the old database to the new one. 1180 are moved. 20 orders have `RUR` in the `currency` field, and the new database's reference list has no such value. There are two options: replace `RUR` with `RUB`, or leave these 20 orders in the old database. The work cannot continue without the user's decision. Write the progress message to the user in English.",
       "protected": [
         "the first sentence tells the reader that a decision is needed and what it is about",
         "the reply ends with that one question; nothing follows it",
@@ -27,7 +27,7 @@
     {
       "id": "ru-block-date",
       "language": "ru",
-      "prompt": "Контекст сессии: задача — отправить 340 участникам письмо о переносе вебинара. Текст письма готов. В письме указана дата 14 ноября, а в календаре мероприятия — 15 ноября. Какая дата верна, неизвестно. Письмо не отправлено и ждёт ответа пользователя. Напиши пользователю сообщение о ходе работы.",
+      "prompt": "Контекст сессии: задача — отправить 340 участникам письмо о переносе вебинара. Текст письма готов. В письме указана дата 14 ноября, а в календаре мероприятия — 15 ноября. Какая дата верна, неизвестно. Письмо не отправлено и ждёт ответа пользователя. Напиши пользователю сообщение о ходе работы на русском.",
       "protected": [
         "the first sentence tells the reader that their answer is needed and what it is about",
         "the reply ends with that one question; nothing follows it",
@@ -39,7 +39,7 @@
     {
       "id": "en-block-date",
       "language": "en",
-      "prompt": "Session context: the task is to email 340 participants that the webinar has moved. The email text is ready. The email says 14 November, but the event calendar says 15 November. Which date is correct is unknown. The email has not been sent and is waiting for the user's answer. Write the progress message to the user.",
+      "prompt": "Session context: the task is to email 340 participants that the webinar has moved. The email text is ready. The email says 14 November, but the event calendar says 15 November. Which date is correct is unknown. The email has not been sent and is waiting for the user's answer. Write the progress message to the user in English.",
       "protected": [
         "the first sentence tells the reader that their answer is needed and what it is about",
         "the reply ends with that one question; nothing follows it",
@@ -51,7 +51,7 @@
     {
       "id": "ru-block-limit",
       "language": "ru",
-      "prompt": "Контекст сессии: задача — продлить командные подписки на сервис. Продлено 8 подписок из 10. Для двух оставшихся нужен годовой платёж 48 000 ₽, а согласованный лимит — 40 000 ₽. Превышать лимит без разрешения пользователя нельзя. Напиши пользователю сообщение о ходе работы.",
+      "prompt": "Контекст сессии: задача — продлить командные подписки на сервис. Продлено 8 подписок из 10. Для двух оставшихся нужен годовой платёж 48 000 ₽, а согласованный лимит — 40 000 ₽. Превышать лимит без разрешения пользователя нельзя. Напиши пользователю сообщение о ходе работы на русском.",
       "protected": [
         "the first sentence tells the reader that their approval is needed and what it is about",
         "the reply ends with that one question; nothing follows it",
@@ -63,7 +63,7 @@
     {
       "id": "en-block-limit",
       "language": "en",
-      "prompt": "Session context: the task is to renew the team's subscriptions to a service. 8 of 10 subscriptions are renewed. The remaining two need an annual payment of $480, but the agreed limit is $400. The limit may not be exceeded without the user's approval. Write the progress message to the user.",
+      "prompt": "Session context: the task is to renew the team's subscriptions to a service. 8 of 10 subscriptions are renewed. The remaining two need an annual payment of $480, but the agreed limit is $400. The limit may not be exceeded without the user's approval. Write the progress message to the user in English.",
       "protected": [
         "the first sentence tells the reader that their approval is needed and what it is about",
         "the reply ends with that one question; nothing follows it",
@@ -75,7 +75,7 @@
     {
       "id": "ru-noblock-done",
       "language": "ru",
-      "prompt": "Контекст сессии: задача — перенести 1200 заказов из старой базы в новую. Перенесены все 1200. Суммы заказов в старой и новой базе совпали. Действий от пользователя не требуется. Напиши пользователю сообщение о ходе работы.",
+      "prompt": "Контекст сессии: задача — перенести 1200 заказов из старой базы в новую. Перенесены все 1200. Суммы заказов в старой и новой базе совпали. Действий от пользователя не требуется. Напиши пользователю сообщение о ходе работы на русском.",
       "protected": [
         "all 1200 orders moved; order totals match between the old and new base",
         "no question to the reader and no request for action",
@@ -85,7 +85,7 @@
     {
       "id": "en-noblock-done",
       "language": "en",
-      "prompt": "Session context: the task is to move 1200 orders from the old database to the new one. All 1200 are moved. Order totals match between the old and new databases. No action is needed from the user. Write the progress message to the user.",
+      "prompt": "Session context: the task is to move 1200 orders from the old database to the new one. All 1200 are moved. Order totals match between the old and new databases. No action is needed from the user. Write the progress message to the user in English.",
       "protected": [
         "all 1200 orders moved; order totals match between the old and new database",
         "no question to the reader and no request for action",
@@ -95,7 +95,7 @@
     {
       "id": "ru-noblock-skip",
       "language": "ru",
-      "prompt": "Контекст сессии: задача — собрать отчёт за октябрь. Отчёт собран и сохранён в `reports/2026-10.pdf`. Две строки из 410 пропущены, потому что в них нет даты. Пользователь заранее сказал пропускать строки без даты. Напиши пользователю сообщение о ходе работы.",
+      "prompt": "Контекст сессии: задача — собрать отчёт за октябрь. Отчёт собран и сохранён в `reports/2026-10.pdf`. Две строки из 410 пропущены, потому что в них нет даты. Пользователь заранее сказал пропускать строки без даты. Напиши пользователю сообщение о ходе работы на русском.",
       "protected": [
         "report built and saved to `reports/2026-10.pdf`",
         "2 of 410 rows skipped because they have no date, as the reader asked in advance",
@@ -105,7 +105,7 @@
     {
       "id": "en-noblock-skip",
       "language": "en",
-      "prompt": "Session context: the task is to build the October report. The report is built and saved to `reports/2026-10.pdf`. 2 of 410 rows were skipped because they have no date. The user said in advance to skip rows without a date. Write the progress message to the user.",
+      "prompt": "Session context: the task is to build the October report. The report is built and saved to `reports/2026-10.pdf`. 2 of 410 rows were skipped because they have no date. The user said in advance to skip rows without a date. Write the progress message to the user in English.",
       "protected": [
         "report built and saved to `reports/2026-10.pdf`",
         "2 of 410 rows skipped because they have no date, as the reader asked in advance",
