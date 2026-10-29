@@ -1,5 +1,5 @@
 {
-  "note": "Patterns that locate the point of a reply for shape_metrics.py. Written from the prompts alone, before any reply was scored. A match marks where the reader meets the point; it does not check that the point is correct. Matching is case-sensitive; (?i) makes a pattern ignore case. null means the case has no single point to locate. deliverables: for cases that ask for a ready text, start matches the first words of the text itself and end its last words (the signature or trailer); words before the first start match and after the last end match are wrapper. null end means the text has no fixed last words.",
+  "note": "Patterns that locate the point of a reply for shape_metrics.py. Written from the prompts alone, before any reply was scored. A match marks where the reader meets the point; it does not check that the point is correct. Matching is case-sensitive; (?i) makes a pattern ignore case. null means the case has no single point to locate. deliverables: for cases that ask for a ready text, start matches the first words of the text itself and end its last words (the signature or trailer); words before the first start match and after the last end match are wrapper. null end means the text has no fixed last words. The en-notice end was widened on 2026-10-29 after the quality run: all six replies signed 'Home Service property management', and the first key counted the last two words as wrapper.",
   "keys": {
     "ru-definition": "(?i)предварительн|не окончательн|неокончательн|черновой вариант|рабоч(ая|ий) верси",
     "en-definition": "(?i)preliminary|not (yet )?final|unfinished|provisional|working version|early version|in progress",
@@ -87,7 +87,7 @@
     },
     "en-notice": {
       "start": "(?i:hot water shut-off|notice|dear resident)",
-      "end": "Home Service"
+      "end": "Home Service(?:\\*\\*)?(?: [Pp]roperty [Mm]anagement)?"
     }
   }
 }

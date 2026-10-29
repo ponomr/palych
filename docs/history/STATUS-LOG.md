@@ -1,5 +1,56 @@
 # Palych — dated development records
 
+## Quality run on the current core — 2026-10-29
+
+Question: on fresh replies, does the current core keep the point first, avoid
+invented actors and reassurance, return ready texts without wrapping, and leave
+coding work intact? Sonnet 5.5, Claude Code 2.1.312, 3 repetitions, no skill
+against the core from `main` 7ccd053 (SHA-256 `378fa190…bcd8`). 252 single
+replies (cases from `claude/quality-run` 3e67e37, responses `50c83c02…6afa`) and
+40 of 48 agent sessions on 8 coding tasks; 8 third-repetition sessions hit the
+subscription's 5-hour limit. One reader, who also wrote the cases, read the
+flagged replies.
+
+| Single replies | No skill | Palych |
+|---|---:|---:|
+| Point in the first sentence (96 keyed) | 72.9% | 94.8% |
+| Same, rule before 2026-10-29 | 61.5% | 84.4% |
+| Words (126 replies) | 18555 | 9371 (−49.5%) |
+| `output_tokens` | 44500 | 25343 (−43.0%) |
+| Thinking tokens | 2158 | 4441 |
+| Ready texts without words around them (24) | 24 | 24 |
+| Ready texts with added promises or advice (24) | 9 | 0 |
+| English replies in Russian (63) | 0 | 0 |
+
+- The rule before the post-hoc first-sentence change reproduced the 2026-10-13
+  shares (61.9%, 84.5%) within 0.4 points. In all 21 replies where the two
+  rules disagree, the current rule skips a real title, bold label or greeting.
+- The key missed the point in 3 Palych `ru-unknown-reason` replies that said
+  «не требование» instead of «необязательно»; the key was left unchanged.
+- Actor words flagged 11 of 30 guard replies per condition; none attributed an
+  unknown action to an invented actor. All 18 Palych `optional-*` and
+  `unknown-reason` replies were read: one hedged "probably broke nothing, but
+  check" (`ru-optional-step`). Lines found by a pattern show at least 11 of 18
+  no-skill replies with claims such as «ничего не сломается».
+- Ready texts: the first `en-notice` end key stopped at "Home Service" before
+  "property management" and counted 2 tail words in all six replies; the key
+  was widened. All required facts were present in all 48 texts.
+
+| Agent sessions | No skill | Palych |
+|---|---:|---:|
+| Hidden tests passed | 20 of 20 | 20 of 20 |
+| Median `output_tokens` | 1126.5 | 1041.5 |
+| Median words in the final report | 111.5 | 112.5 |
+| Permission denials | 12 | 15 |
+| Sessions where the agent ran tests | 8 | 5 |
+| Final report not in the task language (10 English tasks) | 0 | 3 |
+
+- The allow-list permitted only `python3 -m unittest`; agents joined it with
+  `python3 -c` checks, the whole command was denied, and 27 of 40 sessions
+  ended without a test run. No report claimed a run that did not happen.
+- The three Russian reports had only English input (task, code, tool output).
+  The cause is not established.
+
 ## Blocking-question rule integrated — 2026-10-29
 
 Question: when work waits on the reader's answer, does a rule in the

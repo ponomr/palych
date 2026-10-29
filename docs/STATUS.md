@@ -44,9 +44,11 @@ against no skill, 86 Palych preferences, 1 no-skill preference and 3 ties over
 90 pairs; semantic failures 3 with Palych versus 45 without; output tokens 45.4%
 lower. Judge-free shape metrics on the same 180 replies (2026-10-29): the point
 was in the first sentence in 95.2% of keyed Palych replies versus 79.8%, with no
-deliverable wrappers or closing offers versus 6.7% and 3.3%. Still open: unknown
-actors and reasons, and "optional" turning into "safe to skip" (`optional-backup`). Three candidate rules for them failed their pilots
-and were not integrated.
+deliverable wrappers or closing offers versus 6.7% and 3.3%. Unknown actors and
+reasons, and "optional" turning into "safe to skip" (`optional-backup`), were
+open after three failed candidate rules. The quality run on the current core
+(2026-10-29) found no invented actors and one hedged reassurance in 18 Palych
+replies, against at least 11 without a skill; see the development log.
 A shorter core that merged the role and route rules failed its pilot
 (2026-10-15): it reintroduced invented routes.
 A bad/good example in place of the optional and reassurance rules also
@@ -68,6 +70,9 @@ is reported thinking tokens, used in 9 of its 18 blocking replies.
 
 ## Still open
 
+- Agent sessions: Palych wrote the final report in Russian for an English task
+  in 3 of 10 sessions, against 0 of 10 without a skill (2026-10-29). The cause
+  is unknown; single replies showed no such switch (0 of 63).
 - Reader comprehension testing with the intended audience.
 - The complete controlled 20-case, three-repetition comparison with matching
   generation settings.
