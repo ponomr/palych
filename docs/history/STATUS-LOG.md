@@ -28,7 +28,12 @@ as the last sentence."
 - The 12 non-blocking replies per condition asked no question.
 - English replies in Russian: 0 of 30.
 - Visible words over all 30 replies: 1648 current, 1521 candidate (−8%).
-  `output_tokens`: 3757 against 5252 (+40%); the reason is unknown.
+  `output_tokens`: 3757 against 5252 (+40%). The result events report 1828
+  thinking tokens for the candidate, all in 9 of its 18 blocking replies, and
+  none for the current core. Without them the candidate's output is 3424
+  tokens (−9%). The first wording showed the same pattern: 2413 thinking
+  tokens in 12 replies, 3959 against 4299 (−8%) without them. Why the rule
+  triggers thinking is not established.
 - Unsupported additions remain in the date case: the candidate added a plan for
   after the answer in 2 of 6 replies and said the mailing cannot be recalled in 1;
   the current core added plans in all 6. No invented options in either condition.

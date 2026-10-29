@@ -63,7 +63,8 @@ previous core.
 A rule for replies that wait on the reader's answer was integrated
 (2026-10-29): the needed decision came first and the reply ended with one
 question in 18 of 18 blocking replies, against 1 and 5 for the previous core.
-It raised `output_tokens` by 40% while visible words fell by 8%.
+It raised `output_tokens` by 40% while visible words fell by 8%; the whole rise
+is reported thinking tokens, used in 9 of its 18 blocking replies.
 
 ## Still open
 
