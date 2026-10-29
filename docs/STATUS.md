@@ -60,6 +60,10 @@ preparation advice the source does not give. A narrower rule, limited to
 effects the source states and banning added preparation advice, was integrated
 (2026-10-17): the effect came first in 10 of 12 replies, against 0 for the
 previous core.
+A rule for replies that wait on the reader's answer was integrated
+(2026-10-29): the needed decision came first and the reply ended with one
+question in 18 of 18 blocking replies, against 1 and 5 for the previous core.
+It raised `output_tokens` by 40% while visible words fell by 8%.
 
 ## Still open
 

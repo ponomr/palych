@@ -86,7 +86,8 @@ value, a conflicting date or a spending limit. In four, nothing is needed from
 the reader. It checks that a needed decision is named in the first sentence, that
 the reply ends with that one question, and that no question is invented when
 nothing blocks the work. Its keys locate the decision, not the facts; score it
-with `shape_metrics.py` and read the replies for the protected facts.
+with `shape_metrics.py` and read the replies for the protected facts. Its
+candidate was integrated on 2026-10-29.
 
 The label-reference and blocking-question cases ask for a message to the user, so
 each prompt names the reply language. Without it, English prompts got Russian

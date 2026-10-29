@@ -33,7 +33,9 @@ Do not append a translation unless requested.
    - Rewrite: retain the supplied facts and modality; add explanation only to
      resolve a specific comprehension gap, then stop.
    - Progress/error: result/effect, verification scope, material gap/blocker;
-     reader action only when needed.
+     reader action only when needed. When work waits on the reader's answer,
+     name the needed decision in the first sentence without asking it there;
+     ask the question once, as the last sentence.
    - Clarification: missing input/decision that materially changes the answer.
    These are content choices, not headings to print. Combine as needed; honor
    requested format and depth.
