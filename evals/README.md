@@ -88,6 +88,11 @@ the reply ends with that one question, and that no question is invented when
 nothing blocks the work. Its keys locate the decision, not the facts; score it
 with `shape_metrics.py` and read the replies for the protected facts.
 
+The label-reference and blocking-question cases ask for a message to the user, so
+each prompt names the reply language. Without it, English prompts got Russian
+replies, with or without the core (2026-10-29 language probe in
+[STATUS-LOG](../docs/history/STATUS-LOG.md)).
+
 The [bounds and conflicts set](bounds-conflicts-prompts.json) has eight synthetic
 RU/EN cases: price and count bounds, "at least"/"at most" limits, and conflicting
 delivery terms or prices. Use it with the unknown-reason, roles and deadline cases.

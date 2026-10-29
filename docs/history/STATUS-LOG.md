@@ -1,5 +1,31 @@
 # Palych — dated development records
 
+## Reply language in English eval cases — 2026-10-29
+
+Question: why did 16 of 30 English blocking-question replies come back in Russian?
+93 replies, Sonnet 5.5, Claude Code 2.1.312, 3 repetitions; core SHA-256
+`97c69a6f…97d7`. Russian replies counted by letter share outside code spans.
+
+| Arm | Russian replies |
+|---|---:|
+| No core | 11 of 15 |
+| Current core | 6 of 15 |
+| Core without Cyrillic | 4 of 15 |
+| Current core, prompt ends "…in English." | 0 of 15 |
+| Current core, request phrased as a question | 3 of 15 |
+| 2026-10-16 English cases and core | 0 of 18 |
+
+- Only "in English" differs from the current core significantly (Fisher p = 0.017).
+- Russian text in the core is not needed for the effect; a CLI change did not turn
+  the old English cases Russian. The model-side reason for Russian with no Russian
+  input is unknown.
+- The prompts ask for a message to "the user" without naming that reader's
+  language. The blocking-question and label-reference cases now name the reply
+  language in both RU and EN prompts. Earlier results on those sets used the
+  old wording.
+- The owner decided not to add a recipient-language rule to the core.
+- Output: `~/ai-hub/outputs/2026-10-29-palych-lang-probe/`.
+
 ## Reply shape without a judge — 2026-10-29
 
 Question: do deterministic shape metrics, adapted from attention-span v0.11
