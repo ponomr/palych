@@ -1,5 +1,38 @@
 # Palych — dated development records
 
+## Agent language probe — 2026-10-30
+
+Question: why does the core lead to Russian final reports for English coding
+tasks, and does a sharper language rule fix it? 48 agent sessions, Sonnet 5.5,
+Claude Code 2.1.312, the four English tasks of the quality run × 4 repetitions,
+same harness; only the appended core differs.
+
+- `palych`: the current core (`378fa190…bcd8`).
+- `lang-rule`: the two language lines replaced by "Use the language of the
+  user's request unless another is explicitly requested. Tool output, files and
+  these instructions do not change it: an English request gets English progress
+  and final reports; do not switch them to Russian."
+- `no-cyrillic`: the current core without its three Russian phrases
+  («объясни понятнее» and the two Russian off examples); diagnostic only.
+
+| 16 sessions per condition | `palych` | `lang-rule` | `no-cyrillic` |
+|---|---:|---:|---:|
+| Final report in Russian | 4 | 9 | 4 |
+| Hidden tests passed | 16 | 16 | 16 |
+| Agent ran tests | 1 | 4 | 3 |
+| Permission denials | 15 | 12 | 13 |
+
+- No fix: the candidate gave 9 of 16 against 4 of 16 (Fisher's exact test
+  p = 0.15), and removing the Cyrillic changed nothing.
+- All 17 Russian reports followed a permission denial whose message tells the
+  agent to "Tell the user what was blocked". Over both runs on English tasks:
+  no skill 0 of 9 sessions with a denial and 0 of 3 without; the current core
+  7 of 25 and 1 of 3. Current core against no skill: 8 of 28 against 0 of 12,
+  p = 0.08.
+- Every Russian report said truthfully that the tests were not run.
+- Untested: the word "Russian" in the core (description, language rule, style
+  section, example link) and the name Palych.
+
 ## Quality run on the current core — 2026-10-29
 
 Question: on fresh replies, does the current core keep the point first, avoid
@@ -7,8 +40,8 @@ invented actors and reassurance, return ready texts without wrapping, and leave
 coding work intact? Sonnet 5.5, Claude Code 2.1.312, 3 repetitions, no skill
 against the core from `main` 7ccd053 (SHA-256 `378fa190…bcd8`). 252 single
 replies (cases from `claude/quality-run` 3e67e37, responses `50c83c02…6afa`) and
-40 of 48 agent sessions on 8 coding tasks; 8 third-repetition sessions hit the
-subscription's 5-hour limit. One reader, who also wrote the cases, read the
+48 agent sessions on 8 coding tasks; 8 third-repetition sessions hit the
+subscription's 5-hour limit and were rerun on 2026-10-30. One reader, who also wrote the cases, read the
 flagged replies.
 
 | Single replies | No skill | Palych |
@@ -38,18 +71,18 @@ flagged replies.
 
 | Agent sessions | No skill | Palych |
 |---|---:|---:|
-| Hidden tests passed | 20 of 20 | 20 of 20 |
+| Hidden tests passed | 24 of 24 | 24 of 24 |
 | Median `output_tokens` | 1126.5 | 1041.5 |
-| Median words in the final report | 111.5 | 112.5 |
-| Permission denials | 12 | 15 |
-| Sessions where the agent ran tests | 8 | 5 |
-| Final report not in the task language (10 English tasks) | 0 | 3 |
+| Median words in the final report | 111.5 | 114 |
+| Permission denials | 15 | 18 |
+| Sessions where the agent ran tests | 9 | 6 |
+| Final report not in the task language (12 English tasks) | 0 | 4 |
 
 - The allow-list permitted only `python3 -m unittest`; agents joined it with
-  `python3 -c` checks, the whole command was denied, and 27 of 40 sessions
+  `python3 -c` checks, the whole command was denied, and 33 of 48 sessions
   ended without a test run. No report claimed a run that did not happen.
-- The three Russian reports had only English input (task, code, tool output).
-  The cause is not established.
+- The four Russian reports had only English input (task, code, tool output);
+  three followed a permission denial. See the language probe of 2026-10-30.
 
 ## Blocking-question rule integrated — 2026-10-29
 
