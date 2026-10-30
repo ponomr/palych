@@ -70,12 +70,12 @@ is reported thinking tokens, used in 9 of its 18 blocking replies.
 
 ## Still open
 
-- Agent sessions: Palych wrote the final report in Russian for an English task
-  in 12 of 44 sessions, against 0 of 28 without a skill (2026-10-29/30), almost
-  always after a permission denial. A core without the word "Russian" gave
-  0 of 16, so the word is the likely cause; the replacement for the Russian
-  style guidance and the language line is not yet chosen or checked. Single
-  replies showed no such switch (0 of 63).
+- Agent sessions: the released core leads to Russian final reports for English
+  coding tasks (14 of 60 sessions against 0 of 28 without a skill, 2026-10-29/30),
+  usually after a permission denial. The source core no longer contains the word
+  "Russian" and gave 0 of 32; it is not yet released. Why the word causes the
+  switch is unknown, and the shorter description's effect on skill discovery is
+  unchecked. Single replies showed no such switch (0 of 63).
 - Reader comprehension testing with the intended audience.
 - The complete controlled 20-case, three-repetition comparison with matching
   generation settings.

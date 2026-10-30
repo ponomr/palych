@@ -1,5 +1,39 @@
 # Palych — dated development records
 
+## Core without the word "Russian" — 2026-10-30
+
+Question: does the core from the second language probe fix the Russian reports
+without harming single replies? Thresholds were written before the run. Sonnet
+5.5, Claude Code 2.1.312. The candidate (`de61b004…7ae1`) ran 126 single replies
+(the quality run's 42 cases × 3) and 44 agent sessions: the four English tasks ×
+current core and candidate × 4, and the four Russian tasks × candidate × 3.
+Controls for single replies and Russian tasks come from the 2026-10-29 quality run.
+
+| Threshold | Needed | Candidate | Current core |
+|---|---|---:|---:|
+| Russian reports, English tasks | at most 1 of 16 | 0 | 2 |
+| English replies to English questions | 63 of 63 | 63 | 63 |
+| Russian replies to Russian questions | 63 of 63 | 63 | 63 |
+| Russian reports, Russian tasks | 12 of 12 | 12 | 12 (quality run) |
+| Point in the first sentence | at least 89.8% | 92.7% | 94.8% |
+| Words, 126 replies | at most 10776 | 8782 | 9371 |
+| Verbal nouns per 100 Russian words | at most 4.08 | 3.48 | 3.68 |
+
+- All thresholds passed; the candidate became the source core. Verbal nouns are a
+  pattern count of -ние/-ция forms, not a reading of style.
+- English tasks over all runs: cores without "Russian" 0 of 32, the current core
+  14 of 60 (p = 0.002). Both Russian reports of the current core in this run
+  followed passing tests with no permission denial, so a denial is a frequent
+  trigger, not a requirement.
+- Reading: the 8 actor flags are advice to ask support or the instruction's
+  author. Of the 18 replies in the optional and unknown-reason cases, one
+  (`ru-optional-step` r3) ends with a conditional permission to skip, as one
+  current-core reply did in the quality run.
+- Thinking tokens 5213 against 4441 for the current core in the quality run
+  (+17.4%); words −6.3%, `output_tokens` −1.7%. The controls are from another run.
+- Hidden tests passed in all 44 sessions; no report claims a test run that did
+  not happen.
+
 ## Agent language probe 2 — 2026-10-30
 
 Question: does the word "Russian" in the core cause Russian final reports for
