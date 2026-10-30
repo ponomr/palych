@@ -71,10 +71,11 @@ is reported thinking tokens, used in 9 of its 18 blocking replies.
 ## Still open
 
 - Agent sessions: Palych wrote the final report in Russian for an English task
-  in 8 of 28 sessions, against 0 of 12 without a skill (2026-10-29/30), mostly
-  after a permission denial. A sharper language rule and removing the core's
-  Cyrillic did not help; the cause is unknown. Single replies showed no such
-  switch (0 of 63).
+  in 12 of 44 sessions, against 0 of 28 without a skill (2026-10-29/30), almost
+  always after a permission denial. A core without the word "Russian" gave
+  0 of 16, so the word is the likely cause; the replacement for the Russian
+  style guidance and the language line is not yet chosen or checked. Single
+  replies showed no such switch (0 of 63).
 - Reader comprehension testing with the intended audience.
 - The complete controlled 20-case, three-repetition comparison with matching
   generation settings.

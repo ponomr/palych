@@ -1,5 +1,38 @@
 # Palych — dated development records
 
+## Agent language probe 2 — 2026-10-30
+
+Question: does the word "Russian" in the core cause Russian final reports for
+English coding tasks? Same harness, tasks and model as the first probe; 48
+sessions, 4 repetitions.
+
+- `none`: no core.
+- `palych`: the current core (`378fa190…bcd8`).
+- `no-russian`: the current core with every "Russian" removed: the description
+  ("Compact, clear replies."), the language rule (without "do not switch it to
+  Russian"), the style section ("Any language: natural syntax and useful native
+  equivalents") and the example link (`ru`, `en`). The name and the Russian off
+  phrases stay. Diagnostic only.
+
+| 16 sessions per condition | `none` | `palych` | `no-russian` |
+|---|---:|---:|---:|
+| Final report in Russian | 0 | 4 | 0 |
+| Sessions with a permission denial | 12 | 14 | 14 |
+| Hidden tests passed | 16 | 16 | 16 |
+| Agent ran tests | 5 | 3 | 2 |
+
+- Likely cause: the word "Russian". Within this probe 4 of 16 against 0 of 16 is
+  p = 0.10. Over the three runs of 2026-10-29/30: the current core 12 of 44, no
+  skill 0 of 28 (p = 0.002), every core containing "Russian" 25 of 76 against
+  0 of 16 without it (p = 0.005). Cross-run comparisons are weaker than
+  within-run ones.
+- The name Palych and the Cyrillic phrases are not needed for the switch.
+- All four Russian reports followed a permission denial and said truthfully
+  that the tests were not run.
+- Not a core candidate as is: the style section's Russian guidance and the
+  language line (added 2026-10-12 in e16130e to keep English questions in
+  English) need a replacement checked on single Russian and English replies.
+
 ## Agent language probe — 2026-10-30
 
 Question: why does the core lead to Russian final reports for English coding
