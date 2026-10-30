@@ -1,5 +1,5 @@
 {
-  "note": "Patterns that locate the point of a reply for shape_metrics.py. Written from the prompts alone, before any reply was scored. A match marks where the reader meets the point; it does not check that the point is correct. Matching is case-sensitive; (?i) makes a pattern ignore case. null means the case has no single point to locate.",
+  "note": "Patterns that locate the point of a reply for shape_metrics.py. Written from the prompts alone, before any reply was scored. A match marks where the reader meets the point; it does not check that the point is correct. Matching is case-sensitive; (?i) makes a pattern ignore case. null means the case has no single point to locate. deliverables: for cases that ask for a ready text, start matches the first words of the text itself and end its last words (the signature or trailer); words before the first start match and after the last end match are wrapper. null end means the text has no fixed last words. The en-notice end was widened on 2026-10-29 after the quality run: all six replies signed 'Home Service property management', and the first key counted the last two words as wrapper.",
   "keys": {
     "ru-definition": "(?i)предварительн|не окончательн|неокончательн|черновой вариант|рабоч(ая|ий) верси",
     "en-definition": "(?i)preliminary|not (yet )?final|unfinished|provisional|working version|early version|in progress",
@@ -42,6 +42,52 @@
     "ru-noblock-done": "(?i)все 1200|1200 из 1200|1200 заказов|перенесен\\w* (все|полностью)|заверш|готов",
     "en-noblock-done": "(?i)all 1200|1200 of 1200|1200 orders|complete|done|finished",
     "ru-noblock-skip": "(?i)собран|готов|сохран|reports/2026-10\\.pdf",
-    "en-noblock-skip": "(?i)\\bbuilt\\b|ready|saved|done|reports/2026-10\\.pdf"
+    "en-noblock-skip": "(?i)\\bbuilt\\b|ready|saved|done|reports/2026-10\\.pdf",
+    "ru-impersonal-price": "1\\s?200",
+    "en-impersonal-price": "\\$12",
+    "ru-impersonal-access": "(?i)доступ|закрыл|закрыт",
+    "en-impersonal-access": "(?i)access|closed",
+    "ru-letter": null,
+    "en-letter": null,
+    "ru-chat": null,
+    "en-chat": null,
+    "ru-commit": null,
+    "en-commit": null,
+    "ru-notice": null,
+    "en-notice": null
+  },
+  "deliverables": {
+    "ru-letter": {
+      "start": "Тема|Иван|Здравствуйте|Добрый",
+      "end": "Анна|[Оо]тдел[а-я]* доставки"
+    },
+    "en-letter": {
+      "start": "Subject|John|Mr\\.? Miller|Dear|Hello|Hi\\b",
+      "end": "Anna|[Dd]elivery [Tt]eam"
+    },
+    "ru-chat": {
+      "start": "Марин|Привет|Здравствуй|Добрый",
+      "end": null
+    },
+    "en-chat": {
+      "start": "Marina|Hi\\b|Hey\\b|Hello",
+      "end": null
+    },
+    "ru-commit": {
+      "start": "invoice:",
+      "end": "Refs: #214"
+    },
+    "en-commit": {
+      "start": "invoice:",
+      "end": "Refs: #214"
+    },
+    "ru-notice": {
+      "start": "(?i:отключение горячей воды|объявление|уважаемые)",
+      "end": "Дом-Сервис"
+    },
+    "en-notice": {
+      "start": "(?i:hot water shut-off|notice|dear resident)",
+      "end": "Home Service(?:\\*\\*)?(?: [Pp]roperty [Mm]anagement)?"
+    }
   }
 }

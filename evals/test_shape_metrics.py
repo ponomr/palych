@@ -107,6 +107,41 @@ class MeasureTests(unittest.TestCase):
         self.assertNotIn("question_last", row)
 
 
+DELIVERABLES = json.loads(Path(__file__).with_name("answer-keys.json").read_text(encoding="utf-8"))["deliverables"]
+
+
+class WrappingTests(unittest.TestCase):
+    def test_bare_commit_message_in_a_fence_is_pure(self):
+        text = "```\ninvoice: round the total once\n\nTotals differed by 1–2 cents.\n\nRefs: #214\n```"
+        row = mod.measure(text, None, DELIVERABLES["en-commit"])
+        self.assertTrue(row["pure_text"])
+        self.assertEqual((row["lead_in"], row["tail"]), (0, 0))
+
+    def test_lead_in_and_tail_around_a_letter(self):
+        text = ("Вот письмо клиенту:\n\nЗдравствуйте, Иван!\n\nЗаказ № 4821 приедет 15 ноября.\n\n"
+                "С уважением,\nАнна, отдел доставки\n\nЕсли нужно, сделаю короче.")
+        row = mod.measure(text, None, DELIVERABLES["ru-letter"])
+        self.assertFalse(row["pure_text"])
+        self.assertEqual(row["lead_in"], 3)
+        self.assertEqual(row["tail"], 4)
+        self.assertTrue(row["wrapper"] and row["closer"])
+
+    def test_text_without_fixed_end_and_missing_text(self):
+        row = mod.measure("Марина, привет! Созвон в четверг в 15:00.", None, DELIVERABLES["ru-chat"])
+        self.assertTrue(row["pure_text"])
+        self.assertNotIn("tail", row)
+        self.assertFalse(mod.measure("Готово.", None, DELIVERABLES["ru-notice"])["text_found"])
+
+    def test_text_shares(self):
+        records = [record("en-commit", "skill", "invoice: round once\n\nRefs: #214"),
+                   record("en-commit", "skill", "Here you go:\n\ninvoice: round once\n\nRefs: #214", 2),
+                   record("en-commit", "skill", "Done.", 3)]
+        summary = mod.evaluate(records, KEYS, deliverables=DELIVERABLES)[("skill", None)]
+        self.assertEqual((summary["texts"], summary["text_missed"]), (2, 1))
+        self.assertEqual(summary["pure_text"], 0.5)
+        self.assertEqual((summary["lead_in"], summary["tail"]), (0.5, 0.0))
+
+
 class EvaluateTests(unittest.TestCase):
     def test_buried_control_scores_worse_than_its_source(self):
         records = [record("ru-cost", "skill", STATED),
