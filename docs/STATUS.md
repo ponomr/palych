@@ -70,12 +70,13 @@ is reported thinking tokens, used in 9 of its 18 blocking replies.
 
 ## Still open
 
-- Agent sessions: the released core leads to Russian final reports for English
-  coding tasks (14 of 60 sessions against 0 of 28 without a skill, 2026-10-29/30),
-  usually after a permission denial. The source core no longer contains the word
-  "Russian" and gave 0 of 32; it is not yet released. Why the word causes the
-  switch is unknown, and the shorter description's effect on skill discovery is
-  unchecked. Single replies showed no such switch (0 of 63).
+- Agent sessions: cores with the word "Russian", up to 0.8.0, led to Russian
+  final reports for English coding tasks (14 of 60 sessions against 0 of 28
+  without a skill, 2026-10-29/30), usually after a permission denial. Cores
+  without the word, from 0.9.0, gave 0 of 32, measured on Claude Sonnet 5.5 in
+  Claude Code only. Why the word causes the switch is unknown, and the shorter
+  description's effect on skill discovery is unchecked. Single replies showed no
+  such switch (0 of 63).
 - Reader comprehension testing with the intended audience.
 - The complete controlled 20-case, three-repetition comparison with matching
   generation settings.

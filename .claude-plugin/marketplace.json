@@ -6,13 +6,13 @@
   },
   "metadata": {
     "description": "Clear conversational replies in Russian and English, enabled by default with persistent mode controls.",
-    "version": "0.8.0"
+    "version": "0.9.0"
   },
   "plugins": [
     {
       "name": "palych",
       "description": "Clear conversational replies in Russian and English, enabled by default with persistent mode controls.",
-      "version": "0.8.0",
+      "version": "0.9.0",
       "source": "./packages/claude-code",
       "author": {
         "name": "ponomr",
