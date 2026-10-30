@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- Core: the word "Russian" is gone. With it, agent sessions on English coding
+  tasks ended with a Russian final report in 14 of 60 sessions; without it,
+  0 of 32. The language rule keeps "An English question gets an English reply",
+  the style section reads "Any language: natural syntax and useful native
+  equivalents", the description is "Compact, clear replies." and the example
+  links read `ru` and `en`. Checked on 126 single replies and 44 agent sessions
+  (2026-10-30 in the development log).
 - Core: when work waits on the reader's answer, a progress or error reply
   names the needed decision in the first sentence and asks the question once,
   as the last sentence (pilot of 2026-10-29 in the development log).

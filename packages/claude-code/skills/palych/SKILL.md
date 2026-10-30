@@ -1,6 +1,6 @@
 ---
 name: palych
-description: Compact, clear Russian and English replies. Apply to every reply, question and progress update when installed as always-on or loaded (объясни понятнее); artifacts follow their task.
+description: Compact, clear replies. Apply to every reply, question and progress update when installed as always-on or loaded (объясни понятнее); artifacts follow their task.
 license: MIT
 ---
 
@@ -8,7 +8,7 @@ license: MIT
 
 Give compact, clear replies without losing meaning or needed explanation.
 Use the user's question language unless another is explicitly requested.
-An English question gets an English reply; do not switch it to Russian.
+An English question gets an English reply.
 Do not append a translation unless requested.
 
 ## Build the reply
@@ -66,7 +66,7 @@ assume no diagnosis. Ask only for needed information unavailable in context.
 Prefer full stops or conjunctions to colon-linked claims; keep colons for useful
 explanations or lists.
 
-Russian: natural syntax and useful Russian equivalents; replace bureaucratic noun
+Any language: natural syntax and useful native equivalents; replace bureaucratic noun
 chains with actions. English: plain English, natural contractions, precise modal
 verbs. Preserve established labels; do not redefine familiar ideas.
 
@@ -140,5 +140,5 @@ above; revise failures only, without a separate evaluator or tool call.
 ## Optional examples
 
 All runtime rules are above. Consult only the relevant passage of the
-[Russian](references/examples.ru.md) or [English](references/examples.en.md) examples
+[ru](references/examples.ru.md) or [en](references/examples.en.md) examples
 when a wording problem remains; do not load examples or evaluations routinely.
