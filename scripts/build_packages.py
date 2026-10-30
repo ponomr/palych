@@ -57,7 +57,7 @@ def render(source=ROOT):
         'description': description, 'author': OWNER, 'homepage': REPOSITORY,
         'repository': REPOSITORY, 'license': 'MIT', 'keywords': KEYWORDS})
     files[f'{cursor}/rules/palych.mdc'] = text(
-        '---\ndescription: Palych compact, clear replies in Russian and English\n'
+        '---\ndescription: Palych compact, clear replies\n'
         'alwaysApply: true\n---\n\n' + rules)
     files[f'{cursor}/LICENSE'] = license_text
 

@@ -188,7 +188,7 @@ not requested options or necessary reasoning.
 Question: “What does a draft mean?”
 Clearer: “A draft is a provisional version that can still be revised.”
 
-Russian development priority does not change the language of an English question.
+An English question gets an English reply.
 This definition needs no claim about contracts or their legal status.
 
 ## The decision criterion

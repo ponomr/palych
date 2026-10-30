@@ -1,10 +1,12 @@
 # Changelog
 
-## Unreleased
+## 0.9.0 — 2026-10-30
 
-- Core: the word "Russian" is gone. With it, agent sessions on English coding
-  tasks ended with a Russian final report in 14 of 60 sessions; without it,
-  0 of 32. The language rule keeps "An English question gets an English reply",
+- Core: the word "Russian" is gone (1182 → 1201 words with the rule below). With
+  it, agent sessions on English coding tasks ended with a Russian final report
+  in 14 of 60 sessions; without it, 0 of 32, measured on Claude Sonnet 5.5 in
+  Claude Code only. The English examples and the Cursor rule's description drop
+  the word too; plugin catalogs keep it for search. The language rule keeps "An English question gets an English reply",
   the style section reads "Any language: natural syntax and useful native
   equivalents", the description is "Compact, clear replies." and the example
   links read `ru` and `en`. Checked on 126 single replies and 44 agent sessions

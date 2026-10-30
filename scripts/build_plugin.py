@@ -6,7 +6,7 @@ from pathlib import Path
 import shutil
 import tempfile
 
-VERSION = '0.8.0'
+VERSION = '0.9.0'
 SKILL = Path('skills/palych')
 ADAPTER_DOCS = 'https://github.com/ponomr/palych/blob/main/adapters/README.md'
 DESCRIPTION = 'Clear conversational replies in Russian and English, enabled by default with persistent mode controls.'
