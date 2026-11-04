@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.9.2 — 2026-11-05
 
 - Core: the two lines that named a language ("An English question gets an
   English reply" and the English style sentence) are removed; the rule to
