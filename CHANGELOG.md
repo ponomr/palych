@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- Global block: `scripts/install.py` drops the plugin-only text from the
+  installed block (the `saved: true` helper paragraph and the host-loading
+  note; 1175 → 1120 words). The off command and the ban on editing files stay.
+  Awaiting the pilot in the development log before a release installs it.
+- Core: the description names the discovery triggers (объясни понятнее, короче,
+  яснее; plain language, shorter) and the always-on route. Not piloted; it
+  reaches replies only through the plugin hook's emitted text.
 - Adapter: when the host's global instructions already hold the installer's
   block, the plugin hook emits a one-line notice naming the file instead of a
   second copy of the core; saved modes still apply. `--config-dir` overrides

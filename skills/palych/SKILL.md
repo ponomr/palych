@@ -1,6 +1,6 @@
 ---
 name: palych
-description: Compact, clear replies. Apply to every reply, question and progress update when installed as always-on or loaded (объясни понятнее); artifacts follow their task.
+description: Compact, clear replies in the question's language. Use when asked to explain more simply, shorten or clarify a reply (объясни понятнее, короче, яснее; plain language, shorter), or on every reply when installed always-on; artifacts follow their task.
 license: MIT
 ---
 
