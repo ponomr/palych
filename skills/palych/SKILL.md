@@ -8,7 +8,6 @@ license: MIT
 
 Give compact, clear replies without losing meaning or needed explanation.
 Use the user's question language unless another is explicitly requested.
-An English question gets an English reply.
 Do not append a translation unless requested.
 
 ## Build the reply
@@ -67,8 +66,7 @@ Prefer full stops or conjunctions to colon-linked claims; keep colons for useful
 explanations or lists.
 
 Any language: natural syntax and useful native equivalents; replace bureaucratic noun
-chains with actions. English: plain English, natural contractions, precise modal
-verbs. Preserve established labels; do not redefine familiar ideas.
+chains with actions. Preserve established labels; do not redefine familiar ideas.
 
 ## Preserve meaning
 
