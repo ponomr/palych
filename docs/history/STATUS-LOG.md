@@ -30,9 +30,14 @@ the run. Sonnet 5.5, Claude Code 2.1.317; 42 quality-run cases × 3 conditions �
   (4 of 6 against 0 of 3 within the run: one-sided p = 0.12; against 0 of 18
   with those runs: p = 0.001). The other actor flags in all three conditions
   are advice to ask support or the instruction's author, as on 2026-10-30. The
-  trim was withdrawn from `install.py`; why the removed text matters for that
-  case is unknown. `scripts/recheck_unknown_reason.sh` in the folder runs the
-  case 10 more times under `current` and `candidate`; it has not been run.
+  trim was withdrawn from `install.py` (PR #49) pending a recheck.
+- Recheck, same day (`scripts/recheck_unknown_reason.sh`, `raw/recheck/`,
+  same model and CLI): the case 10 more times under each block. `current`
+  named «разработчики» in 3 of 10, `candidate` in 1 of 10; pooled with the
+  pilot, 3 of 13 against 3 of 13. The pilot difference was chance, and the
+  full block invents this actor too (0 of 15 in the runs of 2026-10-29/30, 3 of
+  13 now). The trim was reinstated (1120 words); the guard case itself is
+  noisier than the earlier runs suggested.
 - `lean` passed thresholds 1–4 and 7 against `candidate` and failed 8: the
   definition replies grew to 32–67 words (`candidate` 16–32) and add a second
   paragraph on legal force, the software label or contracts. The two rules stay.

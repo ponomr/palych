@@ -2,10 +2,12 @@
 
 ## Unreleased
 
-- Global block: a trim of the plugin-only text (1175 → 1120 words) was piloted
-  on 2026-11-05 and withdrawn; the installed block is unchanged. The pilot also
-  rejected a core without the draft example and the capacity-price sentence.
-  Record in `docs/history/STATUS-LOG.md`.
+- Global block: `scripts/install.py` drops the plugin-only text from the
+  installed block (the `saved: true` helper paragraph and the host-loading
+  note; 1175 → 1120 words). The off command and the ban on editing files stay.
+  Piloted on 2026-11-05 with a recheck of one guard case; the pilot rejected a
+  core without the draft example and the capacity-price sentence. Record in
+  `docs/history/STATUS-LOG.md`. Not installed until the next release.
 - Core: the description names the discovery triggers (объясни понятнее, короче,
   яснее; plain language, shorter) and the always-on route. Not piloted; it
   reaches replies only through the plugin hook's emitted text.
