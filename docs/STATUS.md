@@ -87,8 +87,8 @@ core restored Russian final reports on Russian coding tasks (14 of 16 against
   2026-11-05 with 0.9.1 on Mac and clovis (Claude Code `CLAUDE.md` and Codex
   `developer_instructions`, stamp `beee7083…`, 1120 words) through the shared
   skill manager, whose mode script now drops the same passages as
-  `scripts/install.py`. File-checked only; model use of the installed block
-  is unverified. The draft example and the capacity-price sentence stay in
+  `scripts/install.py`; replaced by the 0.9.2 block on the same day (next
+  item). File-checked only; model use of the installed block is unverified. The draft example and the capacity-price sentence stay in
   the core: without them definitions grew to 32–67 words with extra
   paragraphs.
 - Agent sessions: a language named in the core pulls the final report toward
@@ -100,9 +100,12 @@ core restored Russian final reports on Russian coding tasks (14 of 16 against
   reports in 14 of 16 on Opus (p = 0.003 against the block in the same run);
   the two misses are both the `intervals` task. Measured in Claude Code only;
   every session in every arm hit one permission denial, so the denial does not
-  explain the switch. The fixed core is on `main` and not yet released or
-  installed; the installed 0.9.1 block still carries the word. Single replies
-  showed no switch (0 of 63 on Sonnet, 0 of 126 on Opus).
+  explain the switch. Released as 0.9.2 and installed on 2026-11-05 on Mac and
+  clovis (Claude Code `CLAUDE.md` and Codex `developer_instructions`, stamp
+  `0a4a0d20…`, 1105 words) through the shared skill manager's mode script,
+  with the released checkout as its source; file-checked only, model use of
+  the installed block is unverified. Single replies showed no switch (0 of 63
+  on Sonnet, 0 of 126 on Opus).
 - Reader comprehension testing with the intended audience.
 - The complete controlled 20-case, three-repetition comparison with matching
   generation settings.
