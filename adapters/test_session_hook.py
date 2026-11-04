@@ -20,8 +20,13 @@ class HookTests(unittest.TestCase):
         self.base = Path(self.temp.name)
         self.state = self.base / 'state'
         self.plugin = builder.build(HERE.parent, self.base / 'plugin', 'codex')
+        # An empty configuration directory: the developer's own global block must
+        # not reach these tests.
+        self.config = self.base / 'config'
+        self.config.mkdir()
         self.command = [sys.executable, str(self.plugin / 'hooks/session_hook.py'),
-                        '--host', 'codex', '--state-dir', str(self.state)]
+                        '--host', 'codex', '--state-dir', str(self.state),
+                        '--config-dir', str(self.config)]
 
     def tearDown(self):
         self.temp.cleanup()
@@ -147,6 +152,44 @@ class HookTests(unittest.TestCase):
         self.assertIn('is ON', self.event(source='startup', sid='new'))
         self.control('\u041e\u0442\u043a\u043b\u044e\u0447\u0438 \u043f\u043e\u0441\u0442\u043e\u044f\u043d\u043d\u043e\u0435 \u0432\u043a\u043b\u044e\u0447\u0435\u043d\u0438\u0435 \u041f\u0430\u043b\u044b\u0447\u0430.')
         self.assertIn('is OFF', self.event(source='startup', sid='newer'))
+
+    def test_worded_controls_match_as_whole_messages(self):
+        expected = {
+            'Отключи Палыча, пожалуйста.': 'off', 'Выключи палыча здесь!': 'off',
+            'Turn off palych please': 'off', 'Disable palych for this conversation.': 'off',
+            'Включи Палыча для этого разговора, пожалуйста': 'on', 'turn on palych': 'on',
+            'Включи Палыча навсегда.': 'always-on', 'Enable palych always, please.': 'always-on',
+            'Отключи Палыча навсегда.': 'always-off', 'Disable palych always.': 'always-off',
+            'Отключи постоянное включение палыча': 'always-off',
+        }
+        for prompt, mode in expected.items():
+            context = self.control(prompt, sid=mode + prompt)
+            self.assertIsNotNone(context, prompt)
+            self.assertEqual(json.loads(context.splitlines()[1])['mode'], mode, prompt)
+        for prompt in ('Отключи палыча и объясни кэш.', 'Palych off', 'Please disable the palych rules',
+                       'Включи Палыча всегда, когда я пишу по-русски.'):
+            self.assertIsNone(self.control(prompt, sid='none' + prompt), prompt)
+
+    def test_global_block_suppresses_core_and_names_the_file(self):
+        (self.config / 'CLAUDE.md').write_text('# Mine\n\n<!-- palych:start -->\nrules\n<!-- palych:end -->\n')
+        (self.config / 'AGENTS.md').write_text('<!-- palych:start -->\n')
+        for host, name in (('claude-code', 'CLAUDE.md'), ('codex', 'AGENTS.md')):
+            for source in ('startup', 'compact'):
+                context = self.event(source=source, host=host, sid=host)
+                self.assertIn('is ON', context)
+                self.assertIn(name, context)
+                self.assertNotIn(self.core(), context)
+        # Saved modes still work: off is reported, and the emission marker stays
+        # empty so a later single route receives the core.
+        self.assertIn('is OFF', self.control('Turn off palych.', sid='codex'))
+        self.assertIn('is OFF', self.event(source='compact', sid='codex'))
+        self.assertEqual(json.loads((self.state / 'state.json').read_text()).get('emitted', {}), {})
+        (self.config / 'AGENTS.md').unlink()
+        self.assertTrue(self.control('Enable palych.', sid='codex').endswith(self.core()))
+
+    def test_global_block_without_marker_does_not_suppress(self):
+        (self.config / 'CLAUDE.md').write_text('# Mine\n\nPalych is mentioned here.\n')
+        self.assertTrue(self.event(source='startup', host='claude-code').endswith(self.core()))
 
     def test_old_name_is_not_a_new_namespace_control(self):
         self.assertIsNone(self.control('Enable clear-replies.'))

@@ -46,11 +46,15 @@ A fresh installation needs no activation command.
 ## Управление / Controls
 
 Отправьте отдельным сообщением одну из фраз. Английские варианты тоже работают.
-Точка в конце необязательна. Цитаты, код и фразы внутри длинного сообщения
-не переключают сохранённый режим автоматически.
+Хук принимает и близкие формы: «выключи», «навсегда», «здесь», «для этого
+разговора», «пожалуйста» в конце, любой регистр, точка или восклицательный
+знак. Цитаты, код и фразы внутри длинного сообщения не переключают
+сохранённый режим автоматически.
 
-Send one of these as a whole message. A final period is optional. Quoted text,
-code and phrases embedded in a longer message do not automatically change state.
+Send one of these as a whole message. The hook also accepts close forms:
+"turn on", "disable", "here", "for this conversation", "always", a trailing
+"please", any case, a final period or exclamation mark. Quoted text, code and
+phrases embedded in a longer message do not automatically change state.
 
 | Русский | English | Действие / Effect |
 |---|---|---|
@@ -108,6 +112,12 @@ preserved and reported as an error instead of being silently replaced.
 ядра передаёт полный скилл. Повторное включение в том же контексте передаёт
 короткое подтверждение. Обычные сообщения ничего не добавляют и не меняют.
 Хуки не разрешают и не запрещают рабочие команды агента.
+Если в общих инструкциях хоста (`CLAUDE.md`, `AGENTS.md` или
+`AGENTS.override.md` в каталоге настроек) стоит блок установщика
+`<!-- palych:start -->`, хук вместо ядра передаёт короткое уведомление с
+именем файла: ядро уже загружено общим путём. Сохранённые режимы при этом
+действуют. Каталог настроек берётся из `CLAUDE_CONFIG_DIR` или `CODEX_HOME`,
+иначе `~/.claude` или `~/.codex`; `--config-dir` переопределяет его.
 
 Данные `saved: true` вместе с режимом подтверждают сохранение текущей управляющей
 просьбы: агенту не нужно снова вызывать помощник. Для другой явной просьбы агент
@@ -126,6 +136,12 @@ gets the parent's current saved mode. `UserPromptSubmit` emits the full core on 
 activation, reactivation or changed core. Repeated activation in the same context
 emits a short acknowledgement. Ordinary messages neither inject nor mutate state.
 Hooks neither authorize nor block work commands.
+When the host's global instructions file (`CLAUDE.md`, `AGENTS.md` or
+`AGENTS.override.md` in the configuration directory) holds the installer's
+`<!-- palych:start -->` block, the hook emits a one-line notice naming that
+file instead of the core: the global route already loads it. Saved modes still
+apply. The configuration directory comes from `CLAUDE_CONFIG_DIR` or
+`CODEX_HOME`, else `~/.claude` or `~/.codex`; `--config-dir` overrides it.
 
 `saved: true` with the mode acknowledges the current control request; the agent
 need not call the helper again. Another explicit request uses the supplied argv.
