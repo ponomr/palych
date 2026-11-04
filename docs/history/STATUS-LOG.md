@@ -1,5 +1,72 @@
 # Palych — dated development records
 
+## Opus 5.5 retune: named-language tokens removed from the core — 2026-11-05
+
+Question: does the installed global block (0.9.1, 1120 words, `beee7083…3d1`)
+regress on Claude Opus 5.5, and if so, which class of text causes it? Harness:
+`claude --print` with `--append-system-prompt-file` as the build selector
+(proven by a probe line the model quoted back), `--model opus --effort medium`,
+`claude-opus-5-5`, Claude Code 2.1.318, hooks, memory, slash commands and MCP
+disabled. Folders `~/ai-hub/outputs/2026-11-05-palych-opus-noise-floor` (floor
+and audit) and `…/2026-11-05-palych-opus-language-fix` (candidate);
+`responses.json` `95ef54ed…7165` and `dc4a6104…f431`. The archive held no
+Opus runs, so the Sonnet values of 2026-10-29/30 are reference only.
+
+Noise floor (174 of 174 slots, 0 broken): two byte-identical copies of the
+block (`build-a`, `build-b`) and `none`, 42 quality cases × 1 and 8 coding
+tasks × 2 repetitions per arm, arms of one case submitted adjacent with the
+order rotated. Single replies showed no regression: language 126 of 126; point
+in the first sentence 84.4% / 93.8% for the builds against 68.8% without (A/A
+difference 9.4 pp, CI [−5.7, +24.5]); words 2693 / 2621 against 5968; actor
+flags in guard cases 1 / 0 against 4 of 10. Agent sessions found one class:
+English final reports on Russian coding tasks, Russian report in 2 of 8
+(`build-a`), 5 of 8 (`build-b`) against 8 of 8 without the block; pooled 7 of
+16 against 8 of 8, Fisher p = 0.009; A/A difference 37.5 pp, CI [−7.5, +82.5].
+English tasks got English reports in all arms (0 of 24 Russian). Hidden tests
+48 of 48; every session in every arm hit one permission denial (chained `&&`
+commands), so the denial is not the differentiator, unlike the Sonnet guess of
+2026-10-30. The bar was registered in the floor README before any edit:
+candidate Russian reports on Russian tasks ≥ 14 of 16 and Fisher p < 0.05
+against the current block in the same run; ≤ 1 of 16 Russian on English tasks;
+hidden tests 32 of 32; single replies 42 × 1 with language 42 of 42,
+point_first ≥ 84.4%, words ≤ 2962, verbal nouns ≤ 4.11, actor flags ≤ 1 of 10
+after reading.
+
+Audit: a proposer agent listed 25 cuts, an independent defender agent ruled
+cut 0, reduce 10, keep 15 (`audit/proposals.json`, `audit/rulings.json`). The
+defender kept the two named-language lines ("An English question gets an
+English reply", "English: plain English, natural contractions, precise modal
+verbs") as untested; the 2026-10-30 record that naming "Russian" pulled reports
+toward Russian on Sonnet made them the one class of pass 1. The candidate
+(1105 words, `0a4a0d20…33b4`) removes only those two tokens; the rule to answer
+in the question's language stays.
+
+| Bar row | Needed | `current` | `candidate` |
+|---|---|---:|---:|
+| Russian report, 4 Russian tasks × 4 | ≥ 14 of 16, p < 0.05 | 5 of 16 | 14 of 16, p = 0.003 |
+| Russian report, 4 English tasks × 4 | ≤ 1 of 16 | 0 of 16 | 0 of 16 |
+| Hidden tests | 32 of 32 | 32 | 32 |
+| Reply in the question language, 42 × 1 | 42 of 42 | — | 42 |
+| Point in the first sentence | ≥ 84.4% | — | 87.5% (28 of 32) |
+| Words, 42 replies | ≤ 2962 | — | 2700 |
+| Verbal nouns per 100 Russian words | ≤ 4.11 | — | 3.82 |
+| Actor flags, guard cases (reading) | ≤ 1 of 10 | — | 1 of 10 |
+
+- Risk difference +56.2 pp, CI [+28.3, +84.2]. The one actor flag
+  (`ru-optional-step`) says the instruction's author does not require the
+  step and adds no reassurance; read and accepted. The two remaining English
+  reports are both `intervals`.
+- Secondary, within the run and inconclusive: the agent ran the tests itself in
+  19 of 32 against 23 of 32 (p = 0.43); output tokens 9737 against 9266 / 9574
+  for the builds; report words 5575 against 5658.
+- Dead or untested hypotheses: an explicit language contrast in the rule
+  worsened reports on Sonnet (2026-10-30, `lang-rule`); replacing "question"
+  with "request" in the language rule and moving the rule to the end of the
+  core stay untested; the defender's ten "reduce" rulings were not applied.
+- Not measured: mode switching, compaction, multi-turn dialogues, Codex and
+  Hermes hosts, reader comprehension, usage-limit debits, and the plugin hook
+  (its emitted text changed with the core but was not run).
+
 ## Trimmed global block and leaner core — 2026-11-05
 
 Question: can the installer's global block drop the plugin-only text (the
