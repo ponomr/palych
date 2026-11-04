@@ -72,12 +72,13 @@ is reported thinking tokens, used in 9 of its 18 blocking replies.
 
 ## Still open
 
-- The trimmed global block (`main` after 2026-11-05: without the plugin-only
-  helper paragraph and loading note, 1120 words) and a leaner core without the
-  draft example and the capacity-price sentence are unpiloted. The pilot folder
-  `~/ai-hub/outputs/2026-11-05-palych-global-trim` (42 cases × 3 conditions ×
-  3 repetitions, thresholds written before the run) decides whether a release
-  installs the trimmed block and whether the two rules leave the core.
+- The global block keeps the plugin-only helper paragraph and loading note: the
+  2026-11-05 pilot of a trimmed block found a new invented actor in
+  `ru-unknown-reason` (4 of 6 trimmed replies against 0 of 3 current and 0 of 15
+  in earlier runs). Why 55 words about the hook's metadata affect that case is
+  unknown; a 20-reply recheck script is in the pilot folder. The draft example
+  and the capacity-price sentence stay in the core: without them definitions
+  grew to 32–67 words with extra paragraphs.
 - Agent sessions: cores with the word "Russian", up to 0.8.0, led to Russian
   final reports for English coding tasks (14 of 60 sessions against 0 of 28
   without a skill, 2026-10-29/30), usually after a permission denial. Cores

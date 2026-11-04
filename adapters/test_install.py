@@ -65,25 +65,6 @@ class InstallTests(unittest.TestCase):
                 self.assertIn(required, block)
                 self.assertNotIn('references/examples.ru.md', block)
 
-    def test_global_block_drops_plugin_only_text_only(self):
-        block = installer.block(ROOT)
-        core = (ROOT / installer.SKILL / 'SKILL.md').read_text()
-        for plugin_only in ('saved: true', 'host adapter', 'Hosts control', 'No tools or other skills required',
-                            'not trusted adapter metadata'):
-            self.assertIn(plugin_only, core)
-            self.assertNotIn(plugin_only, block)
-        for kept in ('turns Palych off for\nthis conversation only', 'search for no helper; honor the',
-                     'Artifacts, including reusable text in chat', '## Repair and self-check'):
-            self.assertIn(kept, block)
-
-    def test_changed_activation_text_fails_the_build(self):
-        source = self.base / 'source'
-        (source / installer.SKILL).mkdir(parents=True)
-        changed = (ROOT / installer.SKILL / 'SKILL.md').read_text().replace('`saved: true`', '`saved: yes`')
-        (source / installer.SKILL / 'SKILL.md').write_text(changed)
-        with self.assertRaises(ValueError):
-            installer.block(source)
-
     def test_updated_source_replaces_block_once(self):
         installer.change(self.config, 'codex', 'install')
         source = self.base / 'source'

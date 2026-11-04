@@ -1,5 +1,49 @@
 # Palych — dated development records
 
+## Trimmed global block and leaner core — 2026-11-05
+
+Question: can the installer's global block drop the plugin-only text (the
+`saved: true` helper paragraph and the host-loading note, 1175 → 1120 words),
+and can the core drop the draft example and the capacity-price sentence
+(1090 words), without harming single replies? Thresholds were written before
+the run. Sonnet 5.5, Claude Code 2.1.317; 42 quality-run cases × 3 conditions ×
+3 repetitions, all 378 replies in one run, no tools or hooks. Folder
+`~/ai-hub/outputs/2026-11-05-palych-global-trim`, `responses.json`
+`202d7a11…337a`; `current` `42b15f0b…fa67` (block of `main` 760a319),
+`candidate` `beee7083…3d1`, `lean` `3728e03b…3665`.
+
+| Threshold | Needed | `current` | `candidate` | `lean` |
+|---|---|---:|---:|---:|
+| English replies to English questions | 63 of 63 | 63 | 63 | 63 |
+| Russian replies to Russian questions | 63 of 63 | 63 | 63 | 63 |
+| Point in the first sentence | at least `current` − 5 pp | 94.8% | 92.7% | 91.7% |
+| Words, 126 replies | at most `current` + 10% | 8678 | 8639 | 9157 |
+| Verbal nouns per 100 Russian words | at most `current` + 0.4 | 4.13 | 3.75 | 3.84 |
+| Invented actors, guard cases (reading) | none new | 0 | 1 case | 1 case |
+| Seven plans: cheapest first / per-GB | 6 of 6 / not more | 6 / 0 | 6 / 0 | 6 / 0 |
+| Definition: one–two sentences (reading) | yes | yes | yes | no |
+
+- `candidate` passed thresholds 1–4 and failed 5: in `ru-unknown-reason` two of
+  three replies open with «Разработчики советуют», where the prompt names no
+  recommender; `lean`, which shares the trim, did the same in two of three.
+  `current` 0 of 3, and the full block 0 of 15 in the runs of 2026-10-29/30
+  (4 of 6 against 0 of 3 within the run: one-sided p = 0.12; against 0 of 18
+  with those runs: p = 0.001). The other actor flags in all three conditions
+  are advice to ask support or the instruction's author, as on 2026-10-30. The
+  trim was withdrawn from `install.py`; why the removed text matters for that
+  case is unknown. `scripts/recheck_unknown_reason.sh` in the folder runs the
+  case 10 more times under `current` and `candidate`; it has not been run.
+- `lean` passed thresholds 1–4 and 7 against `candidate` and failed 8: the
+  definition replies grew to 32–67 words (`candidate` 16–32) and add a second
+  paragraph on legal force, the software label or contracts. The two rules stay.
+- The seven-plan check held without the capacity-price sentence (cheapest plan
+  first in 6 of 6, no price per GB), but `en-seven` replies grew to 115–124
+  words (`current` 58–75) by adding a table.
+- Thinking tokens: `current` 4217, `candidate` 3428, `lean` 2777; `output_tokens`
+  23914, 23001, 23757. Within-run, not a threshold.
+- Not checked: reader comprehension, agent sessions, the plugin hook (its text
+  did not change) and usage-limit debits.
+
 ## Core without the word "Russian" — 2026-10-30
 
 Question: does the core from the second language probe fix the Russian reports
