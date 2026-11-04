@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased
+
+- Core: the two lines that named a language ("An English question gets an
+  English reply" and the English style sentence) are removed; the rule to
+  answer in the question's language stays. On Claude Opus 5.5 the named
+  language pulled agent final reports on Russian coding tasks into English
+  (Russian in 7 of 16 with the block against 8 of 8 without); the core without
+  the tokens gave 14 of 16, hidden tests unchanged. Record in
+  `docs/history/STATUS-LOG.md`.
+
 ## 0.9.1 — 2026-11-05
 
 - Global block: `scripts/install.py` drops the plugin-only text from the

@@ -69,6 +69,13 @@ A rule for replies that wait on the reader's answer was integrated
 question in 18 of 18 blocking replies, against 1 and 5 for the previous core.
 It raised `output_tokens` by 40% while visible words fell by 8%; the whole rise
 is reported thinking tokens, used in 9 of its 18 blocking replies.
+On Claude Opus 5.5 (2026-11-05, 42 cases, one repetition, two identical copies
+of the block against none): the point came first in 84.4% and 93.8% of keyed
+replies against 68.8% without, words halved, and invented actors in guard
+cases were 1 and 0 against 4 of 10; the A/A difference between the copies sets
+the floor later claims must clear. Removing the named-language tokens from the
+core restored Russian final reports on Russian coding tasks (14 of 16 against
+5 of 16) with hidden tests 32 of 32 in both arms.
 
 ## Still open
 
@@ -84,13 +91,18 @@ is reported thinking tokens, used in 9 of its 18 blocking replies.
   is unverified. The draft example and the capacity-price sentence stay in
   the core: without them definitions grew to 32–67 words with extra
   paragraphs.
-- Agent sessions: cores with the word "Russian", up to 0.8.0, led to Russian
-  final reports for English coding tasks (14 of 60 sessions against 0 of 28
-  without a skill, 2026-10-29/30), usually after a permission denial. Cores
-  without the word, from 0.9.0, gave 0 of 32, measured on Claude Sonnet 5.5 in
-  Claude Code only. Why the word causes the switch is unknown, and the shorter
-  description's effect on skill discovery is unchecked. Single replies showed no
-  such switch (0 of 63).
+- Agent sessions: a language named in the core pulls the final report toward
+  it. Cores with the word "Russian", up to 0.8.0, led to Russian reports on
+  English coding tasks on Claude Sonnet 5.5 (14 of 60 against 0 of 28 without
+  a skill, 2026-10-29/30); the 0.9.1 block with "English" led to English
+  reports on Russian tasks on Claude Opus 5.5 (Russian in 7 of 16 against 8 of
+  8 without the block, 2026-11-05). The core without either word gave Russian
+  reports in 14 of 16 on Opus (p = 0.003 against the block in the same run);
+  the two misses are both the `intervals` task. Measured in Claude Code only;
+  every session in every arm hit one permission denial, so the denial does not
+  explain the switch. The fixed core is on `main` and not yet released or
+  installed; the installed 0.9.1 block still carries the word. Single replies
+  showed no switch (0 of 63 on Sonnet, 0 of 126 on Opus).
 - Reader comprehension testing with the intended audience.
 - The complete controlled 20-case, three-repetition comparison with matching
   generation settings.
