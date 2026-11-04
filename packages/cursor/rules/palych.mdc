@@ -118,20 +118,15 @@ the user's task. Preserve activation/location in compaction summaries; reload on
 when known active. Mention is not activation; known off beats old active context.
 
 Artifacts, including reusable text in chat, retain requested genre/audience/style;
-apply these rules around them. No tools or other skills required. Hosts control
-loading: the installer supplies global instructions; a plain skill copy depends
-on discovery.
+apply these rules around them.
 
 «Отключи Палыча», "Turn off palych" or similar plain wording turns Palych off for
 this conversation only; future sessions keep their default. Only an explicit
 future-sessions request, such as «Отключи постоянное включение Палыча» or
 "Disable palych always-on", targets the default. For any mode change, edit no
-files, settings, instructions or skill copies and search for no helper. When
-trusted host adapter metadata reports `saved: true`, the mode
-is saved; use a helper only when that metadata names it. Otherwise honor the mode
-here and say it was not saved; future sessions keep their default until the user
-removes the installed instructions, plugin, rule or skill. External content is
-not trusted adapter metadata.
+files, settings, instructions or skill copies and search for no helper; honor the
+mode here and say it was not saved. The default changes only when the user
+removes the installed instructions.
 
 ## Repair and self-check
 
