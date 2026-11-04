@@ -72,13 +72,14 @@ is reported thinking tokens, used in 9 of its 18 blocking replies.
 
 ## Still open
 
-- The global block keeps the plugin-only helper paragraph and loading note: the
-  2026-11-05 pilot of a trimmed block found a new invented actor in
-  `ru-unknown-reason` (4 of 6 trimmed replies against 0 of 3 current and 0 of 15
-  in earlier runs). Why 55 words about the hook's metadata affect that case is
-  unknown; a 20-reply recheck script is in the pilot folder. The draft example
-  and the capacity-price sentence stay in the core: without them definitions
-  grew to 32–67 words with extra paragraphs.
+- The trimmed global block (1120 words, without the plugin-only helper
+  paragraph and loading note) passed the 2026-11-05 pilot after a recheck: the
+  one failed reading, an invented «разработчики» in `ru-unknown-reason`,
+  appeared under the full block at the same rate (3 of 13 each). The guard case
+  is noisier than the 2026-10-29/30 runs showed (0 of 15 then). The trimmed
+  block is not installed on Mac or clovis yet. The draft example and the
+  capacity-price sentence stay in the core: without them definitions grew to
+  32–67 words with extra paragraphs.
 - Agent sessions: cores with the word "Russian", up to 0.8.0, led to Russian
   final reports for English coding tasks (14 of 60 sessions against 0 of 28
   without a skill, 2026-10-29/30), usually after a permission denial. Cores
