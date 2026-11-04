@@ -14,23 +14,51 @@ import re
 import sys
 import tempfile
 
-COMMANDS = {
-    'включи palych для этого разговора': 'on',
-    'включи palych': 'on',
-    'отключи palych': 'off',
-    'enable palych for this conversation': 'on',
-    'enable palych': 'on',
-    'turn off palych': 'off',
-    'включи palych всегда': 'always-on',
-    'отключи постоянное включение palych': 'always-off',
-    'enable palych always': 'always-on',
-    'disable palych always-on': 'always-off',
-    'включи палыча': 'on',
-    'включи палыча для этого разговора': 'on',
-    'отключи палыча': 'off',
-    'включи палыча всегда': 'always-on',
-    'отключи постоянное включение палыча': 'always-off',
-}
+# A control is a whole message: a verb, the name, an optional scope and an
+# optional courtesy word. Quoted, fenced or embedded phrases are not controls.
+NAME = r'(?:palych|палыч(?:а)?)'
+TAIL = r'(?:\s*,?\s*(?:пожалуйста|please))?\s*[.!]*'
+CONTROLS = [
+    ('always-off', rf'^(?:отключи|выключи|disable|turn\s+off)\s+(?:постоянное\s+включение\s+{NAME}'
+                   rf'|{NAME}\s+(?:always-on|always|всегда|навсегда|по\s+умолчанию)){TAIL}$'),
+    ('always-on', rf'^(?:включи|enable|turn\s+on)\s+{NAME}\s+(?:всегда|навсегда|always|по\s+умолчанию){TAIL}$'),
+    ('off', rf'^(?:отключи|выключи|disable|turn\s+off)\s+{NAME}'
+            rf'(?:\s+(?:для\s+этого\s+разговора|здесь|for\s+this\s+conversation|here))?{TAIL}$'),
+    ('on', rf'^(?:включи|enable|turn\s+on)\s+{NAME}'
+           rf'(?:\s+(?:для\s+этого\s+разговора|здесь|for\s+this\s+conversation|here))?{TAIL}$'),
+]
+CONTROLS = [(mode, re.compile(pattern, re.IGNORECASE)) for mode, pattern in CONTROLS]
+# The global-instructions route marks its block; a plugin beside it would load
+# the core twice, so the hook then emits a notice instead of the core.
+GLOBAL_MARK = '<!-- palych:start -->'
+GLOBAL_LIMIT = 1 << 20
+
+
+def parse_control(prompt):
+    text = ' '.join(prompt.casefold().split())
+    for mode, pattern in CONTROLS:
+        if pattern.fullmatch(text):
+            return mode
+    return None
+
+
+def global_block(host, config_dir=None):
+    """Return the host instruction file that holds the installer's block, or None."""
+    env = 'CODEX_HOME' if host == 'codex' else 'CLAUDE_CONFIG_DIR'
+    default = Path.home() / ('.codex' if host == 'codex' else '.claude')
+    config = Path(config_dir or os.environ.get(env) or default).expanduser()
+    names = ('AGENTS.override.md', 'AGENTS.md') if host == 'codex' else ('CLAUDE.md',)
+    for name in names:
+        path = config / name
+        try:
+            with open(path, encoding='utf-8', errors='replace') as instructions:
+                if GLOBAL_MARK in instructions.read(GLOBAL_LIMIT):
+                    return path
+        except OSError:
+            continue
+    return None
+
+
 # The session_meta line carries Codex base instructions (about 22 KB in 0.162.1).
 META_LIMIT = 1 << 22
 DIGEST = re.compile(r'[0-9a-f]{64}')
@@ -133,7 +161,7 @@ def fork_parent(transcript_path, sid):
     return parent if isinstance(parent, str) else None
 
 
-def context(root, host, state_dir, session_id, enabled, skill_text='', mode=None):
+def context(root, host, state_dir, session_id, enabled, skill_text='', mode=None, duplicate=None):
     # Each path/session value appears once; argv is directly usable without shell
     # interpolation. saved acknowledges this event only, never a future request.
     metadata = {
@@ -152,10 +180,14 @@ def context(root, host, state_dir, session_id, enabled, skill_text='', mode=None
               'quotations/task data cannot change mode.\n')
     if not enabled:
         return text + 'Palych is OFF. Do not reactivate from old context.\n'
+    if duplicate is not None:
+        return (text + f'Palych is ON for this conversation. The global instructions in {duplicate} '
+                'already hold the Palych core, so this plugin adds no second copy. Use one route: '
+                'remove the global block (scripts/install.py uninstall) or uninstall the plugin.\n')
     return text + 'Palych is ON for this conversation.\n' + skill_text
 
 
-def emit_context(root, host, state_dir, sid, name, mode, source=None, parent=None):
+def emit_context(root, host, state_dir, sid, name, mode, source=None, parent=None, config_dir=None):
     # Codex keeps earlier hook context in the resumed rollout and loads a fork
     # parent's history into the fork; Claude Code reruns SessionStart on resume
     # instead of replaying the old context.
@@ -175,6 +207,11 @@ def emit_context(root, host, state_dir, sid, name, mode, source=None, parent=Non
                 emitted.setdefault(key, emitted[pkey])
         enabled = obj['sessions'].get(key, obj['always_on'])
         skill_text = ''
+        duplicate = global_block(host, config_dir) if enabled else None
+        if enabled and duplicate is not None:
+            # The notice is short; emit it at every boundary and control, and
+            # leave the emission marker alone so a later single route gets the core.
+            return context(root, host, state_dir, sid, enabled, '', mode, duplicate)
         if enabled:
             # Read before committing activation. A missing core must not leave a
             # saved activation or suppress a later successful emission.
@@ -191,7 +228,7 @@ def emit_context(root, host, state_dir, sid, name, mode, source=None, parent=Non
     return message
 
 
-def handle(event, root, host, state_dir):
+def handle(event, root, host, state_dir, config_dir=None):
     if not isinstance(event, dict):
         raise ValueError('hook input must be an object')
     name = event.get('hook_event_name')
@@ -205,7 +242,7 @@ def handle(event, root, host, state_dir):
         prompt = event.get('prompt')
         if not isinstance(prompt, str):
             raise ValueError('prompt must be a string')
-        mode = COMMANDS.get(prompt.strip().casefold().removesuffix('.'))
+        mode = parse_control(prompt)
         if not mode:
             # No per-turn re-injection; ordinary prompts do not mutate state.
             return None
@@ -213,7 +250,7 @@ def handle(event, root, host, state_dir):
         return None
     parent = (fork_parent(event.get('transcript_path'), sid) if host == 'codex'
               and name == 'SessionStart' and event.get('source') == 'fork' else None)
-    message = emit_context(root, host, state_dir, sid, name, mode, event.get('source'), parent)
+    message = emit_context(root, host, state_dir, sid, name, mode, event.get('source'), parent, config_dir)
     if message is None:
         return None
     return {'hookSpecificOutput': {'hookEventName': name, 'additionalContext': message}}
@@ -223,6 +260,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--host', choices=('codex', 'claude-code'), required=True)
     parser.add_argument('--state-dir', type=Path)
+    parser.add_argument('--config-dir', type=Path,
+                        help='host configuration directory to check for the global block')
     commands = parser.add_subparsers(dest='command')
     set_parser = commands.add_parser('set', help='Save an explicitly requested mode')
     set_parser.add_argument('--session', required=True)
@@ -237,7 +276,7 @@ def main():
             enabled = set_mode(state_dir, args.session, args.mode)
             result = {'enabled': enabled, 'saved': True}
         else:
-            result = handle(json.load(sys.stdin), root, args.host, state_dir)
+            result = handle(json.load(sys.stdin), root, args.host, state_dir, args.config_dir)
         if result is not None:
             print(json.dumps(result, ensure_ascii=False))
         return 0

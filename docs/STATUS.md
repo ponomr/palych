@@ -21,9 +21,11 @@ and update this page when a limit changes.
 - A Codex plugin loads no rules until the user trusts its hook; Codex reports no
   error. How a user persists trust outside `--dangerously-bypass-hook-trust` was
   not checked.
-- Installing both the global block and a plugin loads the rules twice, and their
-  mode states can conflict. The hook does not detect the global block; choose one
-  route.
+- Installing both the global block and a plugin would load the rules twice. The
+  plugin hook now looks for the installer's marker in the host's global
+  instructions file and, when it is there, emits a one-line notice instead of
+  the core; saved modes still apply. Checked with fixture events only, not in a
+  live host.
 - Hermes and Cursor have no hooks: off lasts only for the current conversation.
 - The band mod is for the global block, not the `palych@palych` plugin: with
   "always off" saved, the plugin keeps the core out of a new session while the

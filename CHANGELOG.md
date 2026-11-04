@@ -1,5 +1,18 @@
 # Changelog
 
+## Unreleased
+
+- Adapter: when the host's global instructions already hold the installer's
+  block, the plugin hook emits a one-line notice naming the file instead of a
+  second copy of the core; saved modes still apply. `--config-dir` overrides
+  the configuration directory for tests.
+- Adapter: control phrases are matched as whole messages by pattern, so
+  «Отключи Палыча, пожалуйста», «Выключи Палыча здесь», "Disable palych for
+  this conversation" and "Enable palych always, please" save the mode without
+  a helper call. Quoted, fenced and embedded phrases are still ignored.
+- GitHub Actions runs the package check and both test suites on pushes to
+  `main` and on pull requests.
+
 ## 0.9.0 — 2026-10-30
 
 - Core: the word "Russian" is gone (1182 → 1201 words with the rule below). With
