@@ -43,7 +43,7 @@ def parse_control(prompt):
 
 
 def global_block(host, config_dir=None):
-    """Return the host instruction file that holds the installer's block, or None."""
+    """Return the host instruction file that still holds a pre-0.10.0 block, or None."""
     env = 'CODEX_HOME' if host == 'codex' else 'CLAUDE_CONFIG_DIR'
     default = Path.home() / ('.codex' if host == 'codex' else '.claude')
     config = Path(config_dir or os.environ.get(env) or default).expanduser()
@@ -182,8 +182,9 @@ def context(root, host, state_dir, session_id, enabled, skill_text='', mode=None
         return text + 'Palych is OFF. Do not reactivate from old context.\n'
     if duplicate is not None:
         return (text + f'Palych is ON for this conversation. The global instructions in {duplicate} '
-                'already hold the Palych core, so this plugin adds no second copy. Use one route: '
-                'remove the global block (scripts/install.py uninstall) or uninstall the plugin.\n')
+                'still hold an old Palych block, so this plugin adds no second copy. Palych no longer '
+                'installs into global instructions: remove that block with '
+                f'scripts/remove_global_block.py remove --host {host}.\n')
     return text + 'Palych is ON for this conversation.\n' + skill_text
 
 

@@ -2,10 +2,14 @@ import { atom, read, update } from 'claude-code'
 import type { EngineInterface, Register } from 'claude-code'
 
 import type { PalychTheme } from '../types'
+import { pluginMode } from './palych-state'
 import { D, desktopParts, fit, GROUP_GAP, readUsage, registerUsage, startUsage } from './usage'
 
-// Session state: Palych starts on in every new conversation, as its rules do.
+// Session state: the switch starts where the Palych plugin's saved mode puts
+// this conversation, on when there is none (Palych's own default).
 const isOn = atom({ plugin: 'palych-toggle', key: 'isOn' } as const, true)
+// Set once the switch took the plugin's mode, so a reload keeps the session's.
+const synced = atom({ plugin: 'palych-toggle', key: 'synced' } as const, false)
 // Set when the switch turns Palych back on; the next prompt tells the model once.
 const isOnPending = atom(
   { plugin: 'palych-toggle', key: 'isOnPending' } as const,
@@ -142,6 +146,10 @@ const ON_NOTE =
   SOURCE +
   'Palych is ON again for this conversation. Apply Palych\'s reply rules from the instructions.'
 
+// With the plugin's mode off its hook has not loaded the rules, and a note can't
+// bring them; a typed phrase makes the hook load them.
+const TYPE_TO_TURN_ON = 'Палыч выключен в плагине: напиши «Включи Палыча», и он загрузит правила'
+
 const phraseMode = (text: string): boolean | undefined => {
   const phrase = text.trim().toLowerCase().replace(/\.$/, '')
 
@@ -158,6 +166,13 @@ export const register: Register = on => {
       description: 'Show or hide the Palych band above the prompt',
       immediate: true,
     })
+    if (!(await read($, synced))) {
+      const mode = await pluginMode($)
+      if (mode !== undefined) {
+        await update($, isOn, () => mode)
+      }
+      await update($, synced, () => true)
+    }
     await syncTheme($)
     $.clock.every(THEME_EVERY_MS, () => void syncTheme($))
     await startUsage($)
@@ -212,6 +227,10 @@ export const register: Register = on => {
     const active = await read($, isOn)
 
     const toggle = async () => {
+      if (!active && (await pluginMode($)) === false) {
+        $.ui.toast(TYPE_TO_TURN_ON)
+        return
+      }
       await update($, isOn, value => !value)
       // Only a switch back on after an off needs a one-time note.
       await update($, isOnPending, () => !active)

@@ -178,6 +178,7 @@ class HookTests(unittest.TestCase):
                 context = self.event(source=source, host=host, sid=host)
                 self.assertIn('is ON', context)
                 self.assertIn(name, context)
+                self.assertIn(f'remove_global_block.py remove --host {host}', context)
                 self.assertNotIn(self.core(), context)
         # Saved modes still work: off is reported, and the emission marker stays
         # empty so a later single route receives the core.

@@ -32,10 +32,10 @@ Install Palych from https://github.com/ponomr/palych using INSTALL.md.
 Enable it for all replies without a separate invocation. Preserve my other instructions.
 ```
 
-The agent will choose the route for its host: global instructions or a plugin
-for Codex and Claude Code, a skill for Hermes or a rule for Cursor. In Claude
-Code it also adds the [band above the prompt](#band-above-the-prompt) alongside
-the global instructions. Start a new conversation afterward. Manual installation, updates and removal are in
+The agent will choose the route for its host: a plugin with a hook for Codex
+and Claude Code, a skill for Hermes or a rule for Cursor. Palych does not write
+into the agent's global instructions. In Claude Code the agent can also add the
+[band above the prompt](#band-above-the-prompt). Start a new conversation afterward. Manual installation, updates and removal are in
 [INSTALL.md](INSTALL.md).
 
 ## Main principles
@@ -79,16 +79,14 @@ they reset, and how full the context is (ctx). The terminal shows a text band.
 `/palych-tab` hides the band; running it again brings it back. Hiding lasts
 until the session ends.
 
-Installing Palych for Claude Code by [INSTALL.md](INSTALL.md) adds the mod
-alongside the global instructions. To install it by hand:
+The mod pairs with the `palych@palych` plugin and starts at its saved mode.
+To install by hand:
 
 ```sh
 claude plugin marketplace add ponomr/palych
+claude plugin install palych@palych
 claude plugin install palych-toggle@palych
 ```
-
-The mod is meant for the global-instructions installation. Do not add it to the
-`palych@palych` plugin, which keeps its own saved mode.
 
 ## Example
 

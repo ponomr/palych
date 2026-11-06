@@ -11,6 +11,7 @@ declare module 'claude-code' {
     'palych-toggle': {
       isOn: PalychToggleMode
       isOnPending: boolean
+      synced: boolean
       theme: PalychTheme
       hidden: boolean
       now: number

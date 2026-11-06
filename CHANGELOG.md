@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.10.0 — 2026-11-06
+
+- Installation: Palych no longer writes host instruction files. For Claude Code
+  and Codex the plugin with its SessionStart hook is the only route;
+  `scripts/install.py` and the global-instructions block are removed.
+- Migration: `scripts/remove_global_block.py check|remove --host codex|claude-code`
+  finds and removes the block that releases before 0.10.0 installed, with a
+  0600 backup; an edited, duplicate or linked block is refused unchanged.
+- The hook's notice for a leftover old block names that command.
+- Cursor's always-applied rule is rendered by `scripts/rules.py`.
+- Band mod 0.2.0: starts at the plugin's saved mode; with the plugin off a press
+  asks the user to type «Включи Палыча» instead of showing on.
+
 ## 0.9.2 — 2026-11-05
 
 - Core: the two lines that named a language ("An English question gets an

@@ -2,6 +2,8 @@ import { expect, mock, test } from 'claude-code/testing'
 import type { Engine } from 'claude-code/testing'
 import type { On } from 'claude-code'
 
+import { sha256 } from '../hooks/palych-state'
+
 const BAND = {
   hasSurvey: false,
   isWorking: false,
@@ -107,6 +109,70 @@ for (const surface of ['terminal', 'desktop'] as const) {
       props: { ...BAND, hasSurvey: true },
     })
     expect(await band.find({ key: 'palych-toggle' })).toBe(undefined)
+  })
+}
+
+const SID = 'f0c1b2a3-0000-4000-8000-000000000001'
+
+// The Palych plugin's saved state, as its session hook writes it.
+const plugin = (on: On, state: object | undefined) => {
+  const toasts: string[] = []
+  mock.env(on, { HOME: '/tmp/palych-home' })
+  on('session.id', () => ({ value: SID }))
+  on('fs.read', (_, e) => {
+    if (e.path !== '/tmp/palych-home/.local/state/palych/claude-code/state.json' || state === undefined) {
+      return { deny: 'no such file' }
+    }
+    return { value: JSON.stringify(state) }
+  })
+  on('ui.toast', (_, e) => {
+    toasts.push(e.text)
+    return { value: undefined }
+  })
+  on('command.register', (_, e) => ({ value: { command: e.name } }))
+  on('session.start', (_, e) => ({ cwd: e.cwd }))
+  return toasts
+}
+
+test('sha256 matches the hook\'s session key', () => {
+  expect(sha256('')).toBe('e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855')
+  expect(sha256('abc')).toBe('ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad')
+  expect(sha256('Палыч')).toBe('abb4cacf02e274a5557eaec6de0d64c107477857104efb5ff6b74f4002f67ff8')
+})
+
+for (const surface of ['terminal', 'desktop'] as const) {
+  test(`${surface}: the switch starts at the plugin's saved mode`, async ($, on) => {
+    plugin(on, { always_on: true, sessions: { [sha256(SID)]: false } })
+    await $.session.start({ cwd: '/tmp', surface, isInteractive: true })
+    const ui = await $.ui.mount({ plugin: 'palych-toggle', surface, component: 'AbovePrompt', props: BAND })
+    expect(await shown(ui, surface)).toBe('Палыч выкл')
+  })
+
+  test(`${surface}: with the plugin off the switch asks for the typed phrase`, async ($, on) => {
+    const seen: (readonly string[] | undefined)[] = []
+    on('prompt.submit', (_, e) => {
+      seen.push(e.context)
+      return { text: e.text }
+    })
+    const toasts = plugin(on, { always_on: false, sessions: {} })
+    await $.session.start({ cwd: '/tmp', surface, isInteractive: true })
+    const ui = await $.ui.mount({ plugin: 'palych-toggle', surface, component: 'AbovePrompt', props: BAND })
+    expect(await shown(ui, surface)).toBe('Палыч выкл')
+
+    await ui.press({ key: 'palych-toggle' })
+    expect(await shown(ui, surface)).toBe('Палыч выкл')
+    expect(toasts.at(-1)).toContain('Включи Палыча')
+
+    await $.prompt.submit({ text: 'Включи Палыча' })
+    expect(seen.at(-1)).toBe(undefined)
+    expect(await shown(ui, surface)).toBe('Палыч вкл')
+  })
+
+  test(`${surface}: without the plugin's state the switch starts on`, async ($, on) => {
+    plugin(on, undefined)
+    await $.session.start({ cwd: '/tmp', surface, isInteractive: true })
+    const ui = await $.ui.mount({ plugin: 'palych-toggle', surface, component: 'AbovePrompt', props: BAND })
+    expect(await shown(ui, surface)).toBe('Палыч вкл')
   })
 }
 

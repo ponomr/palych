@@ -42,9 +42,9 @@ def plugin_files(source, host, prefix, builder):
 
 def render(source=ROOT):
     """Return every generated file as {relative path: bytes}."""
-    builder, installer = load('build_plugin'), load('install')
+    builder, rules_module = load('build_plugin'), load('rules')
     version, description = builder.VERSION, builder.DESCRIPTION
-    rules = installer.payload(source)
+    rules = rules_module.payload(source)
     license_text = (source / 'LICENSE').read_bytes()
     files = {}
     files.update(plugin_files(source, 'claude-code', f'{PACKAGES}/claude-code', builder))

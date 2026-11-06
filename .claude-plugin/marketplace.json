@@ -6,13 +6,13 @@
   },
   "metadata": {
     "description": "Clear conversational replies in Russian and English, enabled by default with persistent mode controls.",
-    "version": "0.9.2"
+    "version": "0.10.0"
   },
   "plugins": [
     {
       "name": "palych",
       "description": "Clear conversational replies in Russian and English, enabled by default with persistent mode controls.",
-      "version": "0.9.2",
+      "version": "0.10.0",
       "source": "./packages/claude-code",
       "author": {
         "name": "ponomr",
@@ -33,7 +33,7 @@
     {
       "name": "palych-toggle",
       "description": "A band above the prompt: the Palych switch for this conversation and usage figures; /palych-tab hides or shows it.",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "source": "./mods/palych-toggle",
       "author": {
         "name": "ponomr",

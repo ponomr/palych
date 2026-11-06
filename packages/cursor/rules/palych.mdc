@@ -124,7 +124,7 @@ future-sessions request, such as «Отключи постоянное вклю�
 "Disable palych always-on", targets the default. For any mode change, edit no
 files, settings, instructions or skill copies and search for no helper; honor the
 mode here and say it was not saved. The default changes only when the user
-removes the installed instructions.
+removes the installed rule.
 
 ## Repair and self-check
 

@@ -21,7 +21,7 @@ class PackageTests(unittest.TestCase):
         return self.files[path].decode('utf-8')
 
     def test_always_on_hosts_get_the_same_core(self):
-        core = packages.load('install').payload(ROOT)
+        core = packages.load('rules').payload(ROOT)
         rule = self.content('packages/cursor/rules/palych.mdc')
         self.assertTrue(rule.startswith('---\ndescription: '))
         self.assertIn('\nalwaysApply: true\n---\n\n', rule)

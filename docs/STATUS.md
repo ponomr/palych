@@ -9,28 +9,28 @@ and update this page when a limit changes.
 
 | Host | Route | Checked | Not checked |
 |---|---|---|---|
-| Claude Code | Plugin with a SessionStart hook, or a global instructions block | Plugin install, update 0.6.0 → 0.6.1, reinstall; core on startup, resume, clear, compact; off survives compaction (live, 2026-10-14) | Global-block route live; progress messages |
-| Codex CLI | Plugin with a SessionStart hook, or a global instructions block | Plugin install and reinstall; off survives compaction; no duplicate core on resume or fork (live, 2026-10-14) | Plugin upgrade from a GitHub marketplace; whether hook trust survives an update; fork in off mode or after a core change |
+| Claude Code | Plugin with a SessionStart hook | Plugin install, update 0.6.0 → 0.6.1, reinstall; core on startup, resume, clear, compact; off survives compaction (live, 2026-10-14) | Progress messages |
+| Codex CLI | Plugin with a SessionStart hook | Plugin install and reinstall; off survives compaction; no duplicate core on resume or fork (live, 2026-10-14) | Plugin upgrade from a GitHub marketplace; whether hook trust survives an update; fork in off mode or after a core change |
 | Hermes | Skill folder `skills/palych`, preloaded with `hermes -s palych` | Install from `skills/palych`, scan SAFE, files identical (v0.22.0, 2026-10-15); preloading inferred from input tokens with the former `packages/hermes/palych` path (v0.16.0, v0.22.0) | Preloading from the new path; `skills.auto_load` with Palych |
 | Cursor | Always-applied rule in a local plugin | Loads as a local plugin; plain off answered without tool calls (3.24.18, one run per case) | Marketplace install; the Claude Code plugin inside Cursor |
 | `npx skills` | Copies `skills/palych` | Folder install and removal (skills@1.7.2) | — |
-| Claude Code band mod | `palych-toggle@palych` from the repository's marketplace, beside the global block | Desktop band, switch and `/palych-tab` in a live session from the mod folder; install from GitHub, enabled, and `/palych-tab` answered in a headless run (2.1.304, 2026-10-20) | Terminal band live (tests only); a live desktop session from the marketplace install; reply style after the switch |
+| Claude Code band mod | `palych-toggle@palych` from the repository's marketplace, beside the `palych@palych` plugin | Desktop band, switch and `/palych-tab` in a live session from the mod folder; install from GitHub, enabled, and `/palych-tab` answered in a headless run (2.1.304, 2026-10-20); 0.2.0 reading the plugin's saved mode in tests only | Terminal band live (tests only); 0.2.0 beside the plugin live; reply style after the switch |
 
 ## Known limitations
 
 - A Codex plugin loads no rules until the user trusts its hook; Codex reports no
   error. How a user persists trust outside `--dangerously-bypass-hook-trust` was
   not checked.
-- Installing both the global block and a plugin would load the rules twice. The
-  plugin hook now looks for the installer's marker in the host's global
-  instructions file and, when it is there, emits a one-line notice instead of
-  the core; saved modes still apply. Checked with fixture events only, not in a
-  live host.
+- Since 0.10.0 the plugin is the only automatic route for Claude Code and
+  Codex; Palych writes no host instruction files. A block left by an older
+  release would load the rules twice: the hook finds its marker and emits a
+  one-line notice naming `scripts/remove_global_block.py` instead of the core;
+  saved modes still apply. Checked with fixture events only, not in a live host.
 - Hermes and Cursor have no hooks: off lasts only for the current conversation.
-- The band mod is for the global block, not the `palych@palych` plugin: with
-  "always off" saved, the plugin keeps the core out of a new session while the
-  switch shows on. The switch's off is a note to the model, not removal of the
-  rules. Hiding with `/palych-tab` lasts until the session ends.
+- The band mod starts at the plugin's saved mode. With the plugin off the
+  rules are not in context, so the switch does not turn on; it asks the user to
+  type «Включи Палыча». The switch's off is a note to the model, not removal of
+  the rules, and is not saved in the plugin. Hiding with `/palych-tab` lasts until the session ends.
 - A Codex fork taken before the parent received the core gets no core; a fork
   taken before the parent was switched off inherits off.
 - The core adds input tokens to every request (about 2600 in the Claude Code
@@ -79,7 +79,8 @@ core restored Russian final reports on Russian coding tasks (14 of 16 against
 
 ## Still open
 
-- The trimmed global block (1120 words, without the plugin-only helper
+- Withdrawn in 0.10.0 with the global-block route; kept as a record. The
+  trimmed global block (1120 words, without the plugin-only helper
   paragraph and loading note) passed the 2026-11-05 pilot after a recheck: the
   one failed reading, an invented «разработчики» in `ru-unknown-reason`,
   appeared under the full block at the same rate (3 of 13 each). The guard case

@@ -9,7 +9,9 @@ Use this repository as the source for future changes.
 - skills/palych/references/: original examples and attribution to the adapted source.
 - skills/palych/LICENSE: generated copy, so the folder installs as a complete skill.
 - adapters/: optional persistent state helper and its subprocess tests.
-- scripts/install.py: always-on global-instructions installer; tests use temporary configs.
+- scripts/rules.py: renders the always-applied rule (Cursor) from SKILL.md.
+- scripts/remove_global_block.py: removes the global-instructions block that releases
+  before 0.10.0 installed; Palych no longer writes host instruction files.
 - scripts/build_plugin.py: alternative Codex or Claude Code plugin builder.
 - scripts/build_packages.py: generates the committed packages/ and plugin catalogs
   (.claude-plugin/, .agents/plugins/, .cursor-plugin/).
