@@ -136,10 +136,11 @@ gets the parent's current saved mode. `UserPromptSubmit` emits the full core on 
 activation, reactivation or changed core. Repeated activation in the same context
 emits a short acknowledgement. Ordinary messages neither inject nor mutate state.
 Hooks neither authorize nor block work commands.
-When the host's global instructions file (`CLAUDE.md`, `AGENTS.md` or
-`AGENTS.override.md` in the configuration directory) holds the installer's
-`<!-- palych:start -->` block, the hook emits a one-line notice naming that
-file instead of the core: the global route already loads it. Saved modes still
+Palych no longer writes host instruction files. When the host's global
+instructions file (`CLAUDE.md`, `AGENTS.md` or `AGENTS.override.md` in the
+configuration directory) still holds the `<!-- palych:start -->` block of a
+release before 0.10.0, the hook emits a one-line notice naming that file and
+`scripts/remove_global_block.py remove` instead of a second core. Saved modes still
 apply. The configuration directory comes from `CLAUDE_CONFIG_DIR` or
 `CODEX_HOME`, else `~/.claude` or `~/.codex`; `--config-dir` overrides it.
 

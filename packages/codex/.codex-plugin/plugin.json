@@ -1,6 +1,6 @@
 {
   "name": "palych",
-  "version": "0.9.2",
+  "version": "0.10.0",
   "description": "Clear conversational replies in Russian and English, enabled by default with persistent mode controls.",
   "author": {
     "name": "ponomr",

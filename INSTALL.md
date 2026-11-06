@@ -1,182 +1,64 @@
 # Установка / Installation
 
-Обычная установка включает Палыча для всех ответов Codex или Claude Code:
-правила добавляются в общие инструкции агента. Отдельный вызов не нужен.
-Нужны Python 3.9+, Git и macOS/Linux.
+Палыч ставится как плагин. Его хук начала разговора (`SessionStart`) подаёт
+правила в каждый новый разговор, после сжатия контекста и после `/clear`.
+Палыч не пишет в общие инструкции агента: `~/.codex/AGENTS.md`,
+`~/.claude/CLAUDE.md` и `developer_instructions` не меняются. Отдельный вызов
+не нужен. Нужны Python 3 (для хука), Git и macOS/Linux.
 
-The default installation enables Palych for all Codex or Claude Code replies by
-adding the rules to the agent's global instructions. No invocation is needed.
-Requires Python 3.9+, Git and macOS/Linux.
-
-Для каждого агента выбери один способ: общие инструкции **или** плагин
-(раздел «Плагины» ниже). Если поставить оба, правила загрузятся дважды,
-а состояния режима могут разойтись.
-
-Choose one route per host: global instructions **or** a plugin (see Plugins
-below). Installing both loads the rules twice, and their mode states can conflict.
+Palych installs as a plugin. Its SessionStart hook supplies the rules to every
+new conversation, after compaction and after `/clear`. Palych does not write
+into the agent's global instructions: `~/.codex/AGENTS.md`, `~/.claude/CLAUDE.md`
+and `developer_instructions` stay untouched. No invocation is needed. Requires
+Python 3 (for the hook), Git and macOS/Linux.
 
 ## Инструкция для агента / Agent instructions
 
-1. Определи используемый агент и его каталог настроек. Если выбор нельзя понять
-   из контекста, уточни Codex или Claude Code. Соблюдай действующие правила
-   пользователя об установке: если общие инструкции управляются другим
-   репозиторием или установщиком, внеси блок через этот источник.
-2. Получи репозиторий и проверь `skills/palych/SKILL.md` и `scripts/install.py` до запуска.
-   Не запускай код из непроверенного источника. Запомни установленный commit.
-3. Выполни подходящую команду `install` ниже. Затем `check`: она проверяет
-   наличие актуальных правил, а не качество ответов модели. Для Claude Code
-   затем поставь мод панели (раздел «Мод панели для Claude Code»).
-4. Сообщи, какой файл изменён и где резервная копия. Попроси начать новый
-   разговор. Если доступна проверка в хосте, проверь загрузку правил с первого
-   сообщения и после сжатия контекста. Не заявляй об этой проверке без результата.
+1. Определи используемый агент. Если его нельзя понять из контекста, уточни:
+   Codex или Claude Code. Не вставляй правила Палыча в общие инструкции
+   агента и не предлагай этого: такой установки больше нет.
+2. Если Палыч ставился до 0.10.0 через общие инструкции, убери старый блок
+   (раздел «Переход со старой установки»). Иначе правила загрузятся дважды.
+3. Поставь плагин командами ниже. В Codex после установки обязательно
+   разреши хук через `/hooks`. Для Claude Code по желанию поставь мод панели.
+4. Попроси начать новый разговор. Если доступна проверка в хосте, проверь
+   загрузку правил с первого сообщения и после сжатия контекста. Не заявляй
+   об этой проверке без результата.
 
-Identify the host and configuration directory. Follow the user's existing
-installation workflow, especially for generated or centrally managed instructions.
-Review the source, record the installed commit, run `install`, then `check`.
-For Claude Code, then install the band mod (see "Band mod for Claude Code").
-Report the changed file and backup path. Start a new conversation. Verify actual
-host loading and compaction when possible; file checks alone do not establish it.
+Identify the host; ask Codex or Claude Code when the context does not say. Do
+not insert Palych's rules into the agent's global instructions or offer to:
+that installation no longer exists. If Palych was installed before 0.10.0
+through global instructions, remove the old block first (see "Migrating from
+the old installation"), or the rules load twice. Install the plugin below; in
+Codex, trust its hook in `/hooks`. For Claude Code the band mod is optional.
+Start a new conversation. Verify actual host loading and compaction when
+possible; file checks alone do not establish it.
 
-## Команды / Commands
-
-```sh
-git clone https://github.com/ponomr/palych.git
-cd palych
-```
-
-**Codex:**
-
-```sh
-python3 scripts/install.py install --host codex
-python3 scripts/install.py check --host codex
-```
-
-**Claude Code:**
-
-```sh
-python3 scripts/install.py install --host claude-code
-python3 scripts/install.py check --host claude-code
-```
-
-### Мод панели для Claude Code / Band mod for Claude Code
-
-Мод [palych-toggle](mods/palych-toggle/README.md) рисует над полем ввода
-переключатель Палыча и показатели usage; `/palych-tab` скрывает и показывает
-панель. Он ставится из каталога этого репозитория и рассчитан на установку
-через общие инструкции выше, не на плагин `palych@palych`.
-
-The [palych-toggle](mods/palych-toggle/README.md) mod draws the Palych switch
-and usage figures above the prompt; `/palych-tab` hides or shows the band. It
-installs from this repository's marketplace and is meant for the
-global-instructions installation above, not for the `palych@palych` plugin.
-
-```sh
-claude plugin marketplace add ponomr/palych
-claude plugin install palych-toggle@palych
-```
-
-Мод появится в новой сессии Claude Code. / The mod appears in a new Claude
-Code session.
-
-Codex: `$CODEX_HOME/AGENTS.md`, по умолчанию `~/.codex/AGENTS.md`.
-Если `AGENTS.override.md` уже существует, блок добавляется туда: Codex выбирает
-этот файл вместо базового. Claude Code: `$CLAUDE_CONFIG_DIR/CLAUDE.md`,
-по умолчанию `~/.claude/CLAUDE.md`. Другой каталог можно задать через
-`--config-dir /path/to/config`.
-
-Codex uses `$CODEX_HOME/AGENTS.md` (default `~/.codex/AGENTS.md`), or an existing
-`AGENTS.override.md`, which takes precedence. Claude Code uses
-`$CLAUDE_CONFIG_DIR/CLAUDE.md` (default `~/.claude/CLAUDE.md`).
-Use `--config-dir /path/to/config` to select another directory.
-
-Установщик добавляет один блок из `SKILL.md`. Остальное содержимое файла
-сохраняется. Перед изменением существующего файла создаётся резервная копия
-в `.palych-backups/` рядом с ним. Повторная установка не дублирует блок.
-Если блок изменён вручную или файл связан с другим файлом, установщик
-останавливается, чтобы сохранить эти изменения. Он не меняет разрешения
-агента, настройки моделей или другие скиллы и не обращается к сети.
-
-The installer inserts one block generated from `SKILL.md`, preserving other
-content. It backs up an existing file under `.palych-backups/` beside it.
-Repeated installation does not duplicate the block. Edited blocks and linked
-files need review through their managing workflow. The installer does not change
-agent permissions, model settings or other skills, and makes no network requests.
-
-## Обновление / Update
-
-Обнови чистый checkout репозитория через обычный Git-процесс и повтори `install`
-и `check`. Сохрани собственные изменения перед обновлением. Затем начни новый
-разговор. Генерируемый блок обновляется из единственного источника — `SKILL.md`.
-
-Update a clean checkout through your normal Git workflow, preserving local edits,
-then repeat `install` and `check`. Start a new conversation. `SKILL.md` is the
-single source for the generated block.
-
-Мод панели обновляется отдельно / The band mod updates separately:
-
-```sh
-claude plugin marketplace update palych
-claude plugin update palych-toggle@palych
-```
-
-## Отключение и удаление / Disable and remove
-
-«Отключи Палыча» / “Turn off palych” — выключить в текущем разговоре.
-Это не удаляет общие инструкции: в новом разговоре Палыч снова включён.
-«Включи Палыча» / “Enable palych” — вернуть в текущем разговоре.
-
-Чтобы выключить постоянный режим, удали только блок Палыча:
-
-To disable it for future conversations, remove only Palych's managed block:
-
-```sh
-python3 scripts/install.py uninstall --host codex
-# Or:
-python3 scripts/install.py uninstall --host claude-code
-```
-
-Мод панели удаляется отдельно / Remove the band mod separately:
-
-```sh
-claude plugin uninstall palych-toggle@palych
-```
-
-Начни новый разговор. Остальные инструкции и резервные копии сохраняются.
-Если пользователь просит постоянное отключение, агент выполняет `uninstall`
-через разрешённый способ управления общими инструкциями, а не обещает
-постоянство по одной фразе в чате.
-
-Start a new conversation. Other instructions and backups are preserved. A request
-to disable Palych permanently requires removing the block through the authorized
-configuration workflow, rather than promising persistence from a chat reply alone.
-
-## Плагины и другие агенты / Plugins and other hosts
-
-Готовые пакеты лежат в `packages/` и собираются из `SKILL.md`. Если блок
-Палыча уже есть в общих инструкциях, сначала удали его (`uninstall` выше).
-
-Ready-made packages live in `packages/` and are generated from `SKILL.md`. If
-Palych's block is already in the global instructions, remove it first
-(`uninstall` above).
-
-**Claude Code** (плагин с хуком / plugin with hooks). Мод панели
-`palych-toggle` с плагином не ставь: у плагина свой сохранённый режим, и
-переключатель о нём не знает. / Do not add the `palych-toggle` band mod to the
-plugin: the plugin keeps its own saved mode, which the switch does not know.
+## Claude Code
 
 ```sh
 claude plugin marketplace add ponomr/palych
 claude plugin install palych@palych
 ```
 
-Обновление / Update:
+### Мод панели / Band mod
+
+Мод [palych-toggle](mods/palych-toggle/README.md) рисует над полем ввода
+переключатель Палыча и показатели usage; `/palych-tab` скрывает и показывает
+панель. Переключатель начинает с сохранённого режима плагина.
+
+The [palych-toggle](mods/palych-toggle/README.md) mod draws the Palych switch
+and usage figures above the prompt; `/palych-tab` hides or shows the band. The
+switch starts at the plugin's saved mode.
 
 ```sh
-claude plugin marketplace update palych
-claude plugin update palych@palych
+claude plugin install palych-toggle@palych
 ```
 
-**Codex** (плагин с хуком / plugin with hooks):
+Плагин и мод появятся в новой сессии Claude Code. / The plugin and the mod
+appear in a new Claude Code session.
+
+## Codex
 
 ```sh
 codex plugin marketplace add ponomr/palych
@@ -219,6 +101,80 @@ The Claude Code and Codex plugins use a SessionStart hook and store mode state
 separately. A fresh installation defaults to on; a saved off state survives
 updates. Rules return after compaction when the host delivers the compact event.
 See [adapters/README.md](adapters/README.md) for mode controls.
+
+## Переход со старой установки / Migrating from the old installation
+
+До 0.10.0 `scripts/install.py` вставлял блок `<!-- palych:start -->…<!-- palych:end -->`
+в `~/.codex/AGENTS.md` (или `AGENTS.override.md`) и `~/.claude/CLAUDE.md`. Этот
+путь удалён. Пока блок на месте, хук плагина видит его, не добавляет вторую
+копию правил и просит убрать блок. Удалить блок:
+
+Before 0.10.0 `scripts/install.py` inserted a `<!-- palych:start -->…<!-- palych:end -->`
+block into `~/.codex/AGENTS.md` (or `AGENTS.override.md`) and `~/.claude/CLAUDE.md`.
+That route is gone. While the block remains, the plugin's hook detects it,
+adds no second copy and asks for its removal. Remove it:
+
+```sh
+git clone https://github.com/ponomr/palych.git
+cd palych
+python3 scripts/remove_global_block.py check --host codex
+python3 scripts/remove_global_block.py remove --host codex
+python3 scripts/remove_global_block.py check --host claude-code
+python3 scripts/remove_global_block.py remove --host claude-code
+```
+
+`check` ничего не меняет и завершается с кодом 1, пока блок найден. `remove`
+вырезает только нетронутый блок, остальной текст сохраняет байт в байт и
+кладёт резервную копию в `.palych-backups/` рядом с файлом. Изменённый вручную
+блок и связанный (symlink) файл скрипт не трогает: их правят через тот
+процесс, который ими управляет. Каталог настроек берётся из `CODEX_HOME` или
+`CLAUDE_CONFIG_DIR`, другой можно задать через `--config-dir`.
+
+`check` changes nothing and exits 1 while a block is found. `remove` cuts only
+an intact block, keeps the rest byte for byte and saves a backup under
+`.palych-backups/` beside the file. It refuses hand-edited blocks and linked
+files: change those through their managing workflow. The configuration
+directory comes from `CODEX_HOME` or `CLAUDE_CONFIG_DIR`; `--config-dir`
+selects another.
+
+Если общие инструкции генерирует другой репозиторий или установщик, убери
+блок в его источнике. / If another repository or installer generates the
+global instructions, remove the block at that source.
+
+## Обновление / Update
+
+```sh
+claude plugin marketplace update palych
+claude plugin update palych@palych
+claude plugin update palych-toggle@palych
+```
+
+Codex — см. выше. Сохранённый режим переживает обновление. Затем начни новый
+разговор. / For Codex see above. A saved mode survives updates. Start a new
+conversation afterwards.
+
+## Отключение и удаление / Disable and remove
+
+«Отключи Палыча» / “Turn off palych” — выключить в текущем разговоре.
+«Включи Палыча» / “Enable palych” — вернуть в текущем разговоре.
+«Отключи постоянное включение Палыча» / “Disable palych always-on” — новые
+разговоры начинаются выключенными; хук сохраняет это в своём состоянии.
+Все фразы — в [adapters/README.md](adapters/README.md).
+
+Удаление / Remove:
+
+```sh
+claude plugin uninstall palych@palych
+claude plugin uninstall palych-toggle@palych
+codex plugin remove palych@palych
+```
+
+Начни новый разговор. / Start a new conversation.
+
+## Другие агенты / Other hosts
+
+Готовые пакеты лежат в `packages/` и собираются из `SKILL.md`.
+Ready-made packages live in `packages/` and are generated from `SKILL.md`.
 
 **Hermes:**
 
@@ -297,19 +253,15 @@ permanently.
 
 ## Проверка в агенте / Host verification
 
-В новом разговоре задай обычный вопрос без имени Палыча. Проверь, что агент
-видит общие правила Палыча. Затем отключи режим, сожми контекст средствами хоста
-и проверь, что выключение сохранено в этом разговоре. В новом разговоре режим
-должен снова включиться. Для плагина проверь также доставленный контекст хука.
-Стиль одного ответа сам по себе не доказывает загрузку правил.
+В новом разговоре задай обычный вопрос без имени Палыча. Проверь контекст,
+который доставил хук: правила Палыча должны быть там. Затем отключи режим,
+сожми контекст средствами хоста и проверь, что выключение сохранено в этом
+разговоре. В новом разговоре режим должен снова включиться. Стиль одного
+ответа сам по себе не доказывает загрузку правил.
 
 In a new conversation, ask an ordinary question without mentioning Palych and
-check that its global rules are loaded. Turn it off, compact the conversation
-and check that off is retained. A new conversation should default to on again.
-For plugins, inspect delivered hook context as well. Reply style alone does not
-prove that the rules loaded.
+inspect the hook's delivered context for the rules. Turn it off, compact the
+conversation and check that off is retained. A new conversation should default
+to on again. Reply style alone does not prove that the rules loaded.
 
-Механизм общих инструкций описан в документации
-[Codex](https://learn.chatgpt.com/docs/agent-configuration/agents-md) и
-[Claude Code](https://code.claude.com/docs/en/memory).
 [Проверено и не проверено в Палыче](docs/STATUS.md).

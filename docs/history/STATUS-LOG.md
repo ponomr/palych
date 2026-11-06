@@ -1,5 +1,18 @@
 # Palych — dated development records
 
+## Plugin-only installation — 2026-11-06
+
+Owner decision (2026-11-06): Palych must not be inserted into a host's system
+instruction files. Release 0.10.0 removes `scripts/install.py` and the global
+block; Claude Code and Codex load the core only through the plugin's
+SessionStart hook. `scripts/remove_global_block.py` migrates old installs: it
+removes only an intact stamped block, keeps a 0600 backup and refuses edited,
+duplicate or linked blocks. The band mod 0.2.0 reads the plugin's state file
+(`~/.local/state/palych/claude-code/state.json`, session key sha256 of the
+session id) so the switch starts at the saved mode. Checked by unit tests
+(adapters, evals) and `claude plugin test mods/palych-toggle`; no live host
+run of the migration or of the mod beside the plugin yet.
+
 ## Opus 5.5 retune: named-language tokens removed from the core — 2026-11-05
 
 Question: does the installed global block (0.9.1, 1120 words, `beee7083…3d1`)

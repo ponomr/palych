@@ -24,11 +24,15 @@ again brings it back; hiding lasts until the session ends.
 
 ## Установка / Install
 
-Установка Палыча для Claude Code по [INSTALL.md](../../INSTALL.md) ставит мод
-вместе с общими инструкциями. Вручную / By hand:
+Мод работает вместе с плагином `palych@palych`: плагин загружает правила,
+мод даёт переключатель. Установка по [INSTALL.md](../../INSTALL.md) ставит
+оба. / The mod pairs with the `palych@palych` plugin: the plugin loads the
+rules, the mod adds the switch. [INSTALL.md](../../INSTALL.md) installs both.
+Вручную / By hand:
 
 ```sh
 claude plugin marketplace add ponomr/palych
+claude plugin install palych@palych
 claude plugin install palych-toggle@palych
 ```
 
@@ -36,18 +40,28 @@ claude plugin install palych-toggle@palych
 
 ## Как работает / How it works
 
-Мод рассчитан на установку Палыча через общие инструкции
-(`scripts/install.py install --host claude-code`). Он не меняет файлы и
+При старте сессии мод читает сохранённый режим плагина
+(`~/.local/state/palych/claude-code/state.json`: выбор этого разговора, иначе
+режим по умолчанию) и ставит переключатель так же. Мод не меняет файлы и
 настройки. Пока переключатель выключен, к каждому сообщению пользователя
 добавляется скрытая для пользователя пометка: Палыч выключен, это явная
 просьба пользователя. Правила Палыча уже требуют исполнять такую просьбу.
 После включения следующее сообщение один раз получает пометку о включении.
 
-The mod targets the global-instructions installation. It edits no files or
+At session start the mod reads the plugin's saved mode (this conversation's
+choice, else the default) and sets the switch to match. It edits no files or
 settings. While the switch is off, every user message carries a note the user
 does not see: Palych is off at the user's explicit request, which Palych's
 rules already honour. Switching it back on adds a one-time note to the next
 message.
+
+Если в плагине Палыч выключен, его правил в контексте нет, и пометка их не
+вернёт. Тогда нажатие не включает переключатель, а показывает подсказку:
+написать «Включи Палыча». Эту фразу ловит хук плагина и загружает правила.
+
+With Palych off in the plugin its rules are not in context and a note cannot
+bring them. The switch then stays off and a toast asks the user to type
+«Включи Палыча»; the plugin's hook catches that phrase and loads the rules.
 
 Фразы управления из `adapters/README.md`, отправленные отдельным сообщением
 («Отключи Палыча», “Turn off palych”), двигают переключатель тоже.
@@ -80,8 +94,13 @@ figures current follows usage-line (commit 194c8f7, MIT, © 2026 sundyme).
 
 ## Ограничения / Limits
 
-- Новый разговор начинается с «Палыч вкл»; состояние не сохраняется между
-  разговорами. / A new conversation starts on; the state is per conversation.
+- Выключение переключателем действует только в этом разговоре и не
+  сохраняется в плагине; сохранённый режим меняют фразы управления. / The
+  switch's off lasts for this conversation and is not saved in the plugin;
+  control phrases change the saved mode.
+- Без файла состояния плагина (плагин не ставился или ещё не запускался)
+  переключатель начинает с «вкл». / Without the plugin's state file the
+  switch starts on.
 - Другие формулировки выключения модель поймёт, но переключатель о них не
   узнает. / Other wording reaches the model but does not move the switch.
 - Пометка — инструкция модели, а не удаление правил из контекста. В живой
@@ -96,11 +115,6 @@ figures current follows usage-line (commit 194c8f7, MIT, © 2026 sundyme).
 - Показатели появляются, когда Claude Code сообщает о лимитах и контексте;
   до этого на панели только переключатель. / The figures appear once Claude
   Code reports limits and context; until then the band holds only the switch.
-- Не для плагина `palych@palych`: у плагина своё сохранённое состояние, и
-  при сохранённом выключении правила в новую сессию не попадают, а
-  переключатель показывает «вкл». / Not for the `palych@palych` plugin: it keeps
-  its own saved state, and with "always off" saved the rules never reach a new
-  session while the switch shows on.
 
 ## Проверка / Checks
 

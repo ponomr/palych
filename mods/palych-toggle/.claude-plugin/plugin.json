@@ -1,6 +1,6 @@
 {
   "name": "palych-toggle",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A band above the prompt: the Palych switch for this conversation and usage figures; /palych-tab hides or shows it.",
   "types": "./types/index.d.ts",
   "author": {
