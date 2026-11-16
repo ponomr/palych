@@ -37,8 +37,9 @@ Commit regenerated packages with the source change; the package check fails on
 drift. Keep host copies of SKILL.md under packages/ and none in the root, so
 `npx skills add ponomr/palych` finds one skill and copies only skills/palych. Build targets must be new directories. Never publish dist/, local state or
 reader responses automatically. The builder does not install a plugin. A fresh trusted plugin defaults to on;
-existing saved defaults are preserved. The global-instructions installation is
-documented in [INSTALL.md](../INSTALL.md); use one route at a time.
+existing saved defaults are preserved. Palych does not write host instruction
+files; removing the block that releases before 0.10.0 installed is documented in
+[INSTALL.md](../INSTALL.md#переход-со-старой-установки--migrating-from-the-old-installation).
 Core edits need relevant semantic checks using the existing evaluation protocol;
 byte and format checks alone cannot prove reply quality.
 
