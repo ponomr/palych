@@ -1,5 +1,127 @@
 # Palych — dated development records
 
+## Behavior-over-location rule alone, with masked evaluation — 2026-11-27
+
+Question: does the rule from PR #59 (`034f576`), without the two dropped
+rules, remove paths and line numbers from replies that were not asked for
+them, without losing facts and without harming replies that need a location
+or the earlier sets? Conditions were registered before the first reply
+(`~/ai-hub/outputs/2026-11-27-palych-code-location-stage2/README.md`). Same
+harness as the entry below: `claude --print`, `--model opus --effort medium`,
+`claude-opus-5-5`, Claude Code 2.1.332, tools, hooks, memory, slash commands
+and MCP disabled. Arms: `current` (core from `main` fd5f0f3, 1204 words,
+`919a36cd…3706`) and `rule3` (the same core with this rule only, 1241 words,
+`35660ddc…52ec`). 120 of 120 replies, 0 retries: 6 `code-tour` cases × 2 arms
+× 3 repetitions and 42 earlier keyed cases × 2 arms × 1. Responses
+`c28c926d…5515` (`code-tour`) and `64372aba…70df` (earlier sets). All 60 pairs
+then went through `blind_eval.py` as an exploratory editorial pilot: arms
+masked as A and B, a fresh `claude-opus-5-5` session per six pairs as the
+assessor, judgments locked before unmasking (`d5baf3cb…38fd`,
+`31612d29…abeb`). The assessor was not given the case criterion "no file
+paths, line numbers or module names", which restates the rule under test.
+Pairs with a reported semantic failure were then read unmasked by the agent
+that ran the pilot.
+
+| # | Condition | Observed | Result |
+|---|---|---|---|
+| 1 | Target cases (`*-tour-export`, `*-tour-compare`): `current` median `code_refs` above 0; `rule3` median 0, key found no less often | `current` 4 in each of 6 `*-tour-compare` replies, 0 in `*-tour-export`, sum 24; `rule3` 0 in 12 of 12; key 12 of 12 in both | met |
+| 2 | Supplied numbers kept no less often | 12 of 12 in both | met |
+| 3 | `*-tour-where`: three locations verbatim, key, `code_refs` at least 3 in 6 of 6 | 6 of 6 in both | met |
+| 4 | Earlier sets: words at most +10%, point first at most 5 points lower, no foreign-script words | words 2941 against 2788 (+5.5%); 0.925 against 0.950; 0 | met |
+| 5 | `code-tour` pairs: `rule3` semantic failures at most those of `current`, none confirmed on reading | `current` 2, `rule3` 0 | met |
+| 6 | 12 target pairs: `rule3` preferred no less often | `rule3` 6, `current` 5, tie 1 | met, no margin |
+| 7 | Earlier sets: `rule3` semantic failures at most `current` plus 2; no confirmed loss of a location, identifier, command or edit | `rule3` 3, `current` 1; no such loss | met within the allowance |
+
+The defect under the current core is confined to `*-tour-compare`: every
+reply ties its findings to four code locations although the reader asked
+which way is more reliable. The current core already names no paths in
+`*-tour-export`. Guard pairs are near-identical (5 ties of 6). `code-tour`
+replies under `rule3` are shorter: 2103 words against 2587 over 18 replies,
+`output_tokens` 7352 against 8114, `input_tokens` 65940 against 64752.
+
+Target preferences split by language: English `rule3` 5, `current` 1; Russian
+`rule3` 1, `current` 4, tie 1. Assessor reasons in the four Russian pairs:
+one `rule3` reply to `ru-tour-compare` is longer and repeats its arguments in
+two sections; in another pair the assessor preferred findings tied to code
+locations; one `rule3` reply to `ru-tour-export` lists the facts without a
+direct answer to "can it be used", and one opens with the verification status
+instead of the speed. Both `current` failures in `code-tour` are confirmed
+(`en-tour-export`): the reply names readers of the log that the prompt does
+not mention and promises normal use after one production run.
+
+The three `rule3` failures in the earlier sets are confirmed and none involves
+a code location. `en-deadline` adds "or smaller" to the 16 MB rule.
+`ru-block-limit` opens with the status and names the needed decision in the
+second sentence: 1 of 6 blocking replies against 0 of 6 for `current`; the
+stage 1 arm holding the same rule had 6 of 6. `ru-noblock-done` adds "other
+order fields were not compared"; both arms added a sentence of that kind in
+stage 1. The `current` failure (`ru-block-date`) says a sending was stopped
+when the letter had not been sent. `ru-block-currency`, the only earlier case
+where `code_refs` differ (7 and 5), keeps every identifier and both options
+in both arms.
+
+Limits: 3 failures against 1 is not separated from noise (one reply per case;
+the 2026-11-05 noise run had no assessor) and dilution of other rules by a
+longer step 3 is not ruled out. The assessor is the same model and showed no
+preference, so a benefit to the reader is not shown: the evidence is a change
+of form. Single replies without tools on one model; the rule targets agent
+reports on code changes. Not reader comprehension. Nothing was merged into
+the core.
+
+## Three candidates from the Dopamine Talk review — 2026-11-27
+
+Question: do three candidate rules move replies their way on Claude Opus 5.5
+without harming their guard cases or the earlier sets? The rules and the
+acceptance conditions were registered before the first reply
+(`~/ai-hub/outputs/2026-11-27-palych-dopamine-candidates/README.md`). Harness:
+`claude --print` with `--append-system-prompt-file` over a one-line base
+prompt, `--model opus --effort medium`, `claude-opus-5-5`, Claude Code 2.1.332,
+tools, hooks, memory, slash commands and MCP disabled. Arms: `none`, `current`
+(core from `main` a6955dd, 1204 words, `919a36cd…3706`) and `candidate` (all
+three rules together, PR #59 at ba88aa0, 1313 words, `36a03e92…e404`). 264 of
+264 replies, 0 retries: 20 new cases × 3 arms × 3 repetitions and 42 earlier
+keyed cases × `current` and `candidate` × 1. Responses `11c9866b…212d` (new)
+and `7cd3089d…ac18` (earlier sets), keys `473f177e…98ac`. Judge-free
+`shape_metrics.py`; descriptive, no statistical claim. The run stopped at 192
+replies when the launching session ended and was resumed from the finished
+replies.
+
+| Candidate | `current` | `candidate` | Guards | Result |
+|---|---|---|---|---|
+| Working words from notes go into the reply's language (`ea6125e`) | 8 foreign words in 12 target replies, all in `ru-mixed-pipeline` | 6; the condition was at most 4 | `en-mixed-label` key 3 of 3 | failed |
+| Estimate form (`8fed782`) | number named 12 of 12, `caveats` median 2 | 12 of 12, median 1.5; the condition was at most 1 | `*-estimate-measured` without a caveat in 3 of 6 (`current` 4 of 6) | failed |
+| Behavior over code location (`ba88aa0`) | `code_refs` 4 in each of 6 `*-tour-compare` replies, 0 in `*-tour-export` | 0 in 12 of 12; key 12 of 12 in both | `*-tour-where`: 3 references and the key in 6 of 6 | passed stage 1 |
+
+Mixed language: the current core already clears three of the four target
+cases (28 foreign words without the core). What stays is "staging", which the
+model keeps as an established term, and the rule lets such terms stay.
+Estimate: the rule cut caveats in `*-estimate-alloc` (median 1 against 2) and
+raised them in `*-estimate-queries` (3 against 2), where replies list the
+calculation's assumptions as separate sentences; all three `candidate` replies
+to `ru-estimate-measured` marked the ratio of two measured values as a
+calculation. None of the six `candidate` replies to `*-estimate-nobasis`
+invented an estimate; some give a labeled hypothetical example with
+percentages. Behavior over location: `candidate` replies open with the
+effect and keep the unchanged file format, the passed tests, the absence of a
+production run, 24 tests for option B against none for A, and that quality,
+cost and speed were not compared (read unmasked by the agent that ran the
+pilot).
+
+Earlier sets, `candidate` against `current`: words 2843 against 2777 (+2.4%,
+limit 10%), point in the first sentence 0.95 in both, no foreign-script words.
+New cases, 60 replies per arm: words 10364 / 6166 / 5298 for `none` /
+`current` / `candidate`; `output_tokens` 29117 / 21874 / 19178; `input_tokens`
+221760 for `candidate` against 209940 for `current`.
+
+Limits: the third rule ran only beside the other two, so its result is not
+isolated; protected facts beyond the listed keys were not judged masked;
+three repetitions on one model; single replies without tools. Two keys gave
+false misses: the search does not see a verbatim error inside a fenced code
+block (`ru-mixed-literals`, 1 of 3 in every arm; the command and the error are
+verbatim in the `current` and `candidate` replies) and does not match "1,200"
+with a comma (`en-noblock-done`). After the pilot PR #59 keeps the third rule
+only (`034f576`); nothing was merged into the core.
+
 ## Plugin-only installation — 2026-11-06
 
 Owner decision (2026-11-06): Palych must not be inserted into a host's system
