@@ -1,5 +1,59 @@
 # Palych — dated development records
 
+## Three candidates from the Dopamine Talk review — 2026-11-27
+
+Question: do three candidate rules move replies their way on Claude Opus 5.5
+without harming their guard cases or the earlier sets? The rules and the
+acceptance conditions were registered before the first reply
+(`~/ai-hub/outputs/2026-11-27-palych-dopamine-candidates/README.md`). Harness:
+`claude --print` with `--append-system-prompt-file` over a one-line base
+prompt, `--model opus --effort medium`, `claude-opus-5-5`, Claude Code 2.1.332,
+tools, hooks, memory, slash commands and MCP disabled. Arms: `none`, `current`
+(core from `main` a6955dd, 1204 words, `919a36cd…3706`) and `candidate` (all
+three rules together, PR #59 at ba88aa0, 1313 words, `36a03e92…e404`). 264 of
+264 replies, 0 retries: 20 new cases × 3 arms × 3 repetitions and 42 earlier
+keyed cases × `current` and `candidate` × 1. Responses `11c9866b…212d` (new)
+and `7cd3089d…ac18` (earlier sets), keys `473f177e…98ac`. Judge-free
+`shape_metrics.py`; descriptive, no statistical claim. The run stopped at 192
+replies when the launching session ended and was resumed from the finished
+replies.
+
+| Candidate | `current` | `candidate` | Guards | Result |
+|---|---|---|---|---|
+| Working words from notes go into the reply's language (`ea6125e`) | 8 foreign words in 12 target replies, all in `ru-mixed-pipeline` | 6; the condition was at most 4 | `en-mixed-label` key 3 of 3 | failed |
+| Estimate form (`8fed782`) | number named 12 of 12, `caveats` median 2 | 12 of 12, median 1.5; the condition was at most 1 | `*-estimate-measured` without a caveat in 3 of 6 (`current` 4 of 6) | failed |
+| Behavior over code location (`ba88aa0`) | `code_refs` 4 in each of 6 `*-tour-compare` replies, 0 in `*-tour-export` | 0 in 12 of 12; key 12 of 12 in both | `*-tour-where`: 3 references and the key in 6 of 6 | passed stage 1 |
+
+Mixed language: the current core already clears three of the four target
+cases (28 foreign words without the core). What stays is "staging", which the
+model keeps as an established term, and the rule lets such terms stay.
+Estimate: the rule cut caveats in `*-estimate-alloc` (median 1 against 2) and
+raised them in `*-estimate-queries` (3 against 2), where replies list the
+calculation's assumptions as separate sentences; all three `candidate` replies
+to `ru-estimate-measured` marked the ratio of two measured values as a
+calculation. None of the six `candidate` replies to `*-estimate-nobasis`
+invented an estimate; some give a labeled hypothetical example with
+percentages. Behavior over location: `candidate` replies open with the
+effect and keep the unchanged file format, the passed tests, the absence of a
+production run, 24 tests for option B against none for A, and that quality,
+cost and speed were not compared (read unmasked by the agent that ran the
+pilot).
+
+Earlier sets, `candidate` against `current`: words 2843 against 2777 (+2.4%,
+limit 10%), point in the first sentence 0.95 in both, no foreign-script words.
+New cases, 60 replies per arm: words 10364 / 6166 / 5298 for `none` /
+`current` / `candidate`; `output_tokens` 29117 / 21874 / 19178; `input_tokens`
+221760 for `candidate` against 209940 for `current`.
+
+Limits: the third rule ran only beside the other two, so its result is not
+isolated; protected facts beyond the listed keys were not judged masked;
+three repetitions on one model; single replies without tools. Two keys gave
+false misses: the search does not see a verbatim error inside a fenced code
+block (`ru-mixed-literals`, 1 of 3 in every arm; the command and the error are
+verbatim in the `current` and `candidate` replies) and does not match "1,200"
+with a comma (`en-noblock-done`). After the pilot PR #59 keeps the third rule
+only (`034f576`); nothing was merged into the core.
+
 ## Plugin-only installation — 2026-11-06
 
 Owner decision (2026-11-06): Palych must not be inserted into a host's system
