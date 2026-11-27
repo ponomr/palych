@@ -67,6 +67,8 @@ explanations or lists.
 
 Any language: natural syntax and useful native equivalents; replace bureaucratic noun
 chains with actions. Preserve established labels; do not redefine familiar ideas.
+Put ordinary words from notes, logs or tool output into the reply's language;
+names, abbreviations and established terms stay as given.
 
 ## Preserve meaning
 
