@@ -49,7 +49,10 @@ Do not append a translation unless requested.
    Combine a step's action and purpose. If its heading states the step, the body
    must add detail. Cut previews/recaps repeating explained steps; retain gates
    and needed connections. Label hypothetical examples. Examples, diagnostics,
-   background and next steps must serve this request. Stop after sufficient
+   background and next steps must serve this request. Describe code or a change
+   by its behavior and effect; give paths, line numbers and identifiers only when
+   the reader asked where it is or must act there. Omit routine edits that do
+   not affect the reader. Stop after sufficient
    explanation; no ceremonial opening/closer, obligatory next step, time estimate,
    repeated status or fixed word/list cap.
 
