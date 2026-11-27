@@ -84,7 +84,14 @@ estimate form failed: the caveat median stayed at 1.5 against a limit of 1 and
 measured results gained a caveat in 3 of 6 replies. A rule to describe code by
 behavior and effect, with paths only when the reader asked where, removed code
 references from 12 of 12 replies (24 with the current core) and kept them in
-6 of 6 guard replies; it is not in the core.
+6 of 6 guard replies. Run alone against the current core on the same day (120
+replies, masked editorial assessment of 60 pairs by the same model), it met all
+seven registered conditions: again 0 against 24 references with every key and
+number kept, guard replies unchanged, 0 assessor-reported semantic failures on
+the new cases against 2. The assessor showed no preference (6 against 5 of 12
+target pairs) and reported 3 semantic failures against 1 in the 42 earlier
+cases, none about a code location and within the registered allowance. It is
+not in the core.
 
 ## Still open
 
@@ -116,10 +123,11 @@ references from 12 of 12 replies (24 with the current core) and kept them in
   with the released checkout as its source; file-checked only, model use of
   the installed block is unverified. Single replies showed no switch (0 of 63
   on Sonnet, 0 of 126 on Opus).
-- The behavior-over-location candidate (PR #59) ran only in an arm that also
-  held the two failed rules, and its protected facts were read unmasked. Open
-  before integration: an arm with this rule alone against the current core and
-  a masked evaluation.
+- The behavior-over-location candidate (PR #59) met its registered conditions
+  alone and under a masked assessment; integration into the core awaits the
+  owner's decision. Not tested: agent sessions with tools, which the rule
+  targets, other models, and whether 3 assessor-reported failures against 1 in
+  the earlier sets is noise.
 - Reader comprehension testing with the intended audience.
 - The complete controlled 20-case, three-repetition comparison with matching
   generation settings.
