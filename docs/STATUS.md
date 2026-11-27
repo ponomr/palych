@@ -76,8 +76,8 @@ cases were 1 and 0 against 4 of 10; the A/A difference between the copies sets
 the floor later claims must clear. Removing the named-language tokens from the
 core restored Russian final reports on Russian coding tasks (14 of 16 against
 5 of 16) with hidden tests 32 of 32 in both arms.
-Three candidates from a review of the Dopamine Talk skill pack were piloted on
-Claude Opus 5.5 (2026-11-27, 264 single replies, judge-free). A rule to put
+Three candidate rules were piloted on Claude Opus 5.5 (2026-11-27, 264 single
+replies, judge-free). A rule to put
 working words from notes into the reply's language failed: the current core
 already cleared three of four cases, and 6 foreign words stayed against 8. An
 estimate form failed: the caveat median stayed at 1.5 against a limit of 1 and

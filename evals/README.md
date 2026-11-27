@@ -108,15 +108,12 @@ nothing blocks the work. Its keys locate the decision, not the facts; score it
 with `shape_metrics.py` and read the replies for the protected facts. Its
 candidate was integrated on 2026-10-29.
 
-Three sets prepared on 2026-11-27 came from a review of the Dopamine Talk skill
-pack (AnnenkovLabs/dopamine-talk). Its rules were not copied: the pack bans
-caveats after an estimate, mention of tests and every file path, and it has no
-measurements of its own. Each set tests one narrower rule and holds guard cases
-for the harm that rule could do. In the pilot of 2026-11-27 on Claude Opus 5.5
-the mixed-language and estimate rules failed their conditions and were
-dropped; the behavior-over-location rule passed the judge-free stage and, run
-alone, a second stage with a masked assessment, and is in the core since
-0.11.0 (see [STATUS-LOG](../docs/history/STATUS-LOG.md)).
+Three sets prepared on 2026-11-27 each test one narrow candidate rule and hold
+guard cases for the harm that rule could do. In the pilot of 2026-11-27 on
+Claude Opus 5.5 the mixed-language and estimate rules failed their conditions
+and were dropped; the behavior-over-location rule passed the judge-free stage
+and, run alone, a second stage with a masked assessment, and is in the core
+since 0.11.0 (see [STATUS-LOG](../docs/history/STATUS-LOG.md)).
 
 The [mixed-language set](mixed-language-prompts.json) has six synthetic cases.
 In four, the session context holds working notes or tool output in English and

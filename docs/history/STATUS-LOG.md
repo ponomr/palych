@@ -78,12 +78,12 @@ of form. Single replies without tools on one model; the rule targets agent
 reports on code changes. Not reader comprehension. Nothing was merged into
 the core.
 
-## Three candidates from the Dopamine Talk review — 2026-11-27
+## Three candidate rules — 2026-11-27
 
 Question: do three candidate rules move replies their way on Claude Opus 5.5
 without harming their guard cases or the earlier sets? The rules and the
 acceptance conditions were registered before the first reply
-(`~/ai-hub/outputs/2026-11-27-palych-dopamine-candidates/README.md`). Harness:
+(`~/ai-hub/outputs/2026-11-27-palych-three-candidates/README.md`). Harness:
 `claude --print` with `--append-system-prompt-file` over a one-line base
 prompt, `--model opus --effort medium`, `claude-opus-5-5`, Claude Code 2.1.332,
 tools, hooks, memory, slash commands and MCP disabled. Arms: `none`, `current`
