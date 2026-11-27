@@ -106,6 +106,51 @@ class MeasureTests(unittest.TestCase):
         self.assertEqual(row["questions"], 0)
         self.assertNotIn("question_last", row)
 
+    def test_code_refs_count_spans_and_file_names(self):
+        tour = "В `WeaponRenderer.java:142` убрали пул. См. conversation.ts:205 и core/loop.ts:108."
+        self.assertEqual(mod.measure(tour)["code_refs"], 3)
+        self.assertEqual(mod.measure("Да и/или нет: 1/2 пути, 60 км/ч, версия 4.2.1.")["code_refs"], 0)
+
+    def test_caveats_count_sentences_that_mark_an_estimate(self):
+        once = "По расчёту убрали 252 000 выделений в секунду: 4200 объектов на кадр при 60 кадрах."
+        self.assertEqual(mod.measure(once, KEYS["ru-estimate-alloc"])["caveats"], 1)
+        self.assertTrue(mod.measure(once, KEYS["ru-estimate-alloc"])["point_first"])
+        hedged = ("In theory, 252,000 allocations per second are gone. This is an estimate. "
+                  "Nothing was measured, so treat it with care. It was not measured under load.")
+        self.assertEqual(mod.measure(hedged)["caveats"], 4)
+        measured = "Замер на 200 запросах: было 1,8 с, стало около 95 мс."
+        self.assertEqual(mod.measure(measured, KEYS["ru-estimate-measured"])["caveats"], 0)
+
+    def test_foreign_words_in_a_russian_reply(self):
+        text = ("Передача задач (handoff) идёт одним текстом, а флаг busy снимается. Нужна retry-логика.\n\n"
+                "Команда `git pull --rebase`, GitHub Actions, API и iPhone остаются. Ответ за 95 ms, "
+                "см. core/loop.ts:108 и https://x.test/idle.\n\n```\nfatal: refusing to merge\n```")
+        row = mod.measure(text, language="ru")
+        self.assertEqual(row["foreign_list"], ["handoff", "busy", "retry"])
+        self.assertEqual(row["foreign_words"], 3)
+
+    def test_foreign_words_in_an_english_reply_and_without_a_language(self):
+        row = mod.measure("The «Сохранить и выйти» button does not save the field.", language="en")
+        self.assertEqual(row["foreign_words"], 3)
+        self.assertEqual(mod.measure("The export fails for 3 of 40 branches.", language="en")["foreign_words"], 0)
+        self.assertNotIn("foreign_words", mod.measure("Флаг busy снимается."))
+
+
+class CaseSetTests(unittest.TestCase):
+    def test_new_sets_have_a_key_entry_for_every_case(self):
+        for name in ("mixed-language", "estimate", "code-tour"):
+            cases = json.loads(Path(__file__).with_name(f"{name}-prompts.json").read_text(encoding="utf-8"))["cases"]
+            for case in cases:
+                self.assertIn(case["id"], KEYS)
+                self.assertEqual(case["id"].split("-", 1)[0], case["language"])
+                self.assertTrue(case["protected"])
+
+    def test_estimate_keys_are_not_answered_by_the_prompt(self):
+        cases = json.loads(Path(__file__).with_name("estimate-prompts.json").read_text(encoding="utf-8"))["cases"]
+        for case in cases:
+            if "-alloc" in case["id"] or "-queries" in case["id"] or "-nobasis" in case["id"]:
+                self.assertIsNone(re.search(KEYS[case["id"]], case["prompt"]), case["id"])
+
 
 DELIVERABLES = json.loads(Path(__file__).with_name("answer-keys.json").read_text(encoding="utf-8"))["deliverables"]
 
@@ -170,6 +215,17 @@ class EvaluateTests(unittest.TestCase):
         self.assertEqual(summary["asked"], 0.667)
         self.assertEqual(summary["question_last"], 0.5)
         self.assertEqual(summary["after_question"], 2)
+
+    def test_foreign_share_total_and_listing(self):
+        records = [record("ru-mixed-handoff", "skill", "Задача передаётся одним текстом."),
+                   record("ru-mixed-handoff", "skill", "Этот handoff идёт одним текстом, флаг busy снят, handoff сломан.", 2),
+                   record("en-mixed-notes", "skill", "The export fails for 3 of 40 branches.")]
+        summary = mod.evaluate(records, KEYS)[("skill", None)]
+        self.assertEqual(summary["foreign"], 0.333)
+        self.assertEqual(summary["foreign_words"], 3)
+        listed = mod.foreign_counts(mod.measured(records, KEYS, split="language"))
+        self.assertEqual(listed[("skill", "ru")], [("handoff", 2), ("busy", 1)])
+        self.assertEqual(listed[("skill", "en")], [])
 
 
 if __name__ == "__main__":

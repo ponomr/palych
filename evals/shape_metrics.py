@@ -23,7 +23,21 @@ Per reply:
   "Let me know");
 - questions: sentences that end with a question mark. For a reply with a
   question, question_last says the reply ends with one, and after_question
-  counts the words that follow the last one.
+  counts the words that follow the last one;
+- code_refs: inline code spans plus file names with a known extension outside
+  them ("loop.ts:108"). High is right when the reader asked where something is
+  in the code, so read it per case;
+- caveats: sentences that mark an estimate or a missing measurement ("оценка",
+  "не замеряли", "in theory", "not measured", "assuming"). Approximators such
+  as "около" and "about" do not count;
+- foreign_words: words in the other script, taken from the case's language. A
+  Russian reply counts lower-case Latin words of two or more letters; an
+  English reply counts Cyrillic words. Code spans, fenced code, URLs, e-mail
+  addresses, file names and a unit right after a number ("95 ms") are skipped,
+  as are capitalised words and abbreviations, which are taken for names, so a
+  foreign word that opens a sentence is missed. A quoted label or error still
+  counts, and so does a lower-case product name outside code formatting;
+  --foreign lists the counted words so they can be read.
 
 For a case that asks for a ready text (a letter, a message, a commit message),
 the key file's deliverables entry gives patterns for the text's first and last
@@ -58,6 +72,22 @@ TABLE = re.compile(r'^\s*\|')
 SENTENCE_END = re.compile(r'[.!?…](?=["»)\]*_]*(?:\s|$))')
 FENCE_LINE = re.compile(r'^\s*```.*$', re.M)
 QUESTION = re.compile(r'\?(?=["»)\]*_]*(?:\s|$))')
+INLINE_CODE = re.compile(r'`[^`\n]+`')
+LINK = re.compile(r'https?://\S+|\S+@\S+')
+FILE_REF = re.compile(
+    r'(?<![\w/.-])(?:[\w.-]+/)*[\w-]+\.(?:py|ts|tsx|js|jsx|java|go|rs|rb|php|cs|kt|sql|json|ya?ml|toml|md|sh)'
+    r'(?!\w)(?::\d+)?')
+LATIN_WORD = re.compile(r'(?<![A-Za-z0-9_])(?<!\d[ \u00a0\u202f])[a-z]{2,}(?![A-Za-z0-9_])')
+CYRILLIC_WORD = re.compile(r'[А-Яа-яЁё]+')
+CAVEAT = re.compile(
+    r'оценк|оценоч|оцениваю|прикид|расч[её]т|в теории|теоретич|не измер|не замер|'
+    r'(?:нет|без) (?:замер|измерени)|(?:замер|измерени)\w* (?:нет|не было|не провод)|'
+    r'ориентировочн|предположительн|если предположить|допущени|'
+    r'\bestimat|in theory|theoretical|unmeasured|'
+    r'(?:\bnot|\bnever|\bnothing|n\'?t)(?: (?:was|were|been|yet|actually))* measured|'
+    r'no (?:benchmark|measurement)|without (?:a )?(?:benchmark|measurement)|assum(?:e|ing|ption)|'
+    r'back-of-the-envelope|ballpark|on paper',
+    re.I)
 LABEL_LINE = re.compile(r'^\s*\*\*[^*]*[^*.!?…]\*\*:?\s*$')
 LEAD_LABEL = re.compile(r'\*\*(?:\W*\w+){1,3}\W*\*\*')
 GREETING = re.compile(
@@ -144,7 +174,17 @@ def wrapping(text, spec):
     return row
 
 
-def measure(text, key=None, deliverable=None):
+def foreign(prose, language):
+    """Words in the other script: lower-case Latin in a Russian reply, Cyrillic in an English one."""
+    plain = FILE_REF.sub(' ', LINK.sub(' ', INLINE_CODE.sub(' ', prose)))
+    if language == 'ru':
+        return LATIN_WORD.findall(plain)
+    if language == 'en':
+        return CYRILLIC_WORD.findall(plain)
+    return None
+
+
+def measure(text, key=None, deliverable=None, language=None):
     prose = FENCE.sub(' ', text)
     lines = [line for line in prose.splitlines() if line.strip() and not HEADING.match(line)]
     start, end = first_sentence_span(prose)
@@ -159,7 +199,13 @@ def measure(text, key=None, deliverable=None):
         'wrapper': bool(paras and WRAPPER.match(paras[0])),
         'closer': bool(paras and CLOSER.search(paras[-1])),
         'questions': len(QUESTION.findall(prose)),
+        'code_refs': len(INLINE_CODE.findall(prose)) + len(FILE_REF.findall(INLINE_CODE.sub(' ', prose))),
+        'caveats': sum(bool(CAVEAT.search(s)) for line in lines for s in sentences(line)),
     }
+    other_script = foreign(prose, language)
+    if other_script is not None:
+        row['foreign_words'] = len(other_script)
+        row['foreign_list'] = other_script
     if row['questions']:
         last = list(QUESTION.finditer(prose))[-1]
         row['after_question'] = words(prose[last.end():])
@@ -218,10 +264,15 @@ def summarize(rows):
         'pure_text': share('pure_text'),
         'lead_in': share_positive(rows, 'lead_in'),
         'tail': share_positive(rows, 'tail'),
+        'code_refs': median('code_refs'),
+        'caveats': median('caveats'),
+        'foreign': share_positive(rows, 'foreign_words'),
+        'foreign_words': sum(r['foreign_words'] for r in rows) if any('foreign_words' in r for r in rows) else None,
     }
 
 
-def evaluate(records, keys, control=None, split=None, deliverables=None):
+def measured(records, keys, control=None, split=None, deliverables=None):
+    """(condition, group) -> measured rows, with the constructed buried arm when asked."""
     rows = []
     for record in records:
         language = record['case_id'].split('-', 1)[0]
@@ -232,11 +283,28 @@ def evaluate(records, keys, control=None, split=None, deliverables=None):
             variants.append((control + '+buried', bury(record['response'], language)))
         for condition, text in variants:
             group = {'language': language, 'case': record['case_id']}.get(split)
-            rows.append(((condition, group), measure(text, key, deliverable)))
+            rows.append(((condition, group), measure(text, key, deliverable, language)))
     groups = {}
     for label, row in rows:
         groups.setdefault(label, []).append(row)
-    return {label: summarize(group) for label, group in sorted(groups.items(), key=lambda x: (x[0][0], x[0][1] or ''))}
+    return dict(sorted(groups.items(), key=lambda x: (x[0][0], x[0][1] or '')))
+
+
+def evaluate(records, keys, control=None, split=None, deliverables=None):
+    return {label: summarize(group)
+            for label, group in measured(records, keys, control, split, deliverables).items()}
+
+
+def foreign_counts(groups):
+    """(condition, group) -> counted other-script words with their frequencies, most frequent first."""
+    counts = {}
+    for label, rows in groups.items():
+        tally = {}
+        for row in rows:
+            for word in row.get('foreign_list', ()):
+                tally[word.lower()] = tally.get(word.lower(), 0) + 1
+        counts[label] = sorted(tally.items(), key=lambda item: (-item[1], item[0]))
+    return counts
 
 
 def digest(path):
@@ -249,6 +317,8 @@ def main():
     parser.add_argument('--keys', default=str(Path(__file__).with_name('answer-keys.json')))
     parser.add_argument('--control', metavar='CONDITION', help='add a constructed buried arm from this condition')
     parser.add_argument('--split', choices=('language', 'case'), help='group by language or case within each condition')
+    parser.add_argument('--foreign', action='store_true',
+                        help='also list the counted other-script words per condition')
     parser.add_argument('--json', action='store_true', help='print JSON instead of a table')
     args = parser.parse_args()
 
@@ -256,13 +326,15 @@ def main():
     key_file = json.loads(Path(args.keys).read_text(encoding='utf-8'))
     keys = key_file['keys']
     unknown = sorted({r['case_id'] for r in records} - set(keys))
-    results = evaluate(records, keys, args.control, args.split, key_file.get('deliverables'))
+    groups = measured(records, keys, args.control, args.split, key_file.get('deliverables'))
+    results = {label: summarize(rows) for label, rows in groups.items()}
+    listed = foreign_counts(groups) if args.foreign else {}
     meta = {'responses_sha256': digest(args.responses), 'keys_sha256': digest(args.keys),
             'cases_without_key_entry': unknown}
     if args.json:
-        print(json.dumps({'meta': meta, 'results': [{'condition': c, 'group': g, **s}
-                                                    for (c, g), s in results.items()]},
-                         ensure_ascii=False, indent=2))
+        print(json.dumps({'meta': meta, 'results': [
+            {'condition': c, 'group': g, **s, **({'foreign_list': listed[(c, g)]} if args.foreign else {})}
+            for (c, g), s in results.items()]}, ensure_ascii=False, indent=2))
         return
     for name, value in meta.items():
         print(f'{name}: {value}')
@@ -270,6 +342,9 @@ def main():
     print('\t'.join(['condition', 'group'] + columns))
     for (condition, group), summary in results.items():
         print('\t'.join([condition, group or 'all'] + ['' if summary[c] is None else str(summary[c]) for c in columns]))
+    for (condition, group), counted in listed.items():
+        print(f'foreign words, {condition} {group or "all"}: '
+              + (', '.join(f'{word} {n}' for word, n in counted) or 'none'))
 
 
 if __name__ == '__main__':

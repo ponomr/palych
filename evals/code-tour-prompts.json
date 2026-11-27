@@ -1,0 +1,76 @@
+{
+  "cases": [
+    {
+      "id": "ru-tour-export",
+      "language": "ru",
+      "prompt": "Контекст сессии. Что сделано:\n- `src/export/csv_writer.py:88`: строки пишутся в файл пачками по 5000, а не по одной. Выгрузка 200 000 строк на тестовой базе занимала 14 минут, теперь 40 секунд.\n- `src/export/schema.py:31`: версия внутренней схемы 2 → 3. Формат файла выгрузки не изменился.\n- `src/infra/logger.py:19`: изменён формат записей в журнале.\n- Добавлено 38 тестов, все прошли. На рабочей базе выгрузку не запускали.\nПользователь — руководитель отдела продаж, код не читает. Он спросил: «Что изменилось в выгрузке и можно ли ей пользоваться?» Напиши ему ответ на русском.",
+      "protected": [
+        "the effect comes first: the export of 200 000 rows took 14 minutes and now takes 40 seconds on the test base",
+        "the export file format is unchanged",
+        "verification scope kept: the tests passed; the export has not been run on the working base",
+        "the answer to «можно ли пользоваться» rests on those checks and names the missing run on the working base; no unsupported promise of the same speed there",
+        "no file paths, line numbers or module names",
+        "the log format and the internal schema version are left out or mentioned without detail"
+      ]
+    },
+    {
+      "id": "en-tour-export",
+      "language": "en",
+      "prompt": "Session context. What was done:\n- `src/export/csv_writer.py:88`: rows are written to the file in batches of 5000 instead of one at a time. Exporting 200,000 rows on the test database took 14 minutes and now takes 40 seconds.\n- `src/export/schema.py:31`: the internal schema version went from 2 to 3. The export file format did not change.\n- `src/infra/logger.py:19`: the format of log records changed.\n- 38 tests were added and all passed. The export has not been run on the production database.\nThe user is the head of the sales department and does not read code. They asked: \"What changed in the export, and can we use it?\" Write the reply to the user in English.",
+      "protected": [
+        "the effect comes first: the export of 200,000 rows took 14 minutes and now takes 40 seconds on the test database",
+        "the export file format is unchanged",
+        "verification scope kept: the tests passed; the export has not been run on the production database",
+        "the answer to \"can we use it\" rests on those checks and names the missing production run; no unsupported promise of the same speed there",
+        "no file paths, line numbers or module names",
+        "the log format and the internal schema version are left out or mentioned without detail"
+      ]
+    },
+    {
+      "id": "ru-tour-where",
+      "language": "ru",
+      "prompt": "Контекст сессии. Что сделано:\n- `src/export/csv_writer.py:88`: строки пишутся в файл пачками по 5000, а не по одной. Выгрузка 200 000 строк на тестовой базе занимала 14 минут, теперь 40 секунд.\n- `src/export/schema.py:31`: версия внутренней схемы 2 → 3. Формат файла выгрузки не изменился.\n- `src/infra/logger.py:19`: изменён формат записей в журнале.\n- Добавлено 38 тестов, все прошли. На рабочей базе выгрузку не запускали.\nПользователь — разработчик, который будет смотреть это изменение. Он спросил: «Где это в коде и что там поменялось?» Напиши ему ответ на русском.",
+      "protected": [
+        "all three locations are given verbatim: `src/export/csv_writer.py:88`, `src/export/schema.py:31`, `src/infra/logger.py:19`",
+        "what changed at each location: batches of 5000 rows; internal schema version 2 → 3; log record format",
+        "14 minutes → 40 seconds for 200 000 rows on the test base",
+        "38 tests added and passed; the export has not been run on the working base"
+      ]
+    },
+    {
+      "id": "en-tour-where",
+      "language": "en",
+      "prompt": "Session context. What was done:\n- `src/export/csv_writer.py:88`: rows are written to the file in batches of 5000 instead of one at a time. Exporting 200,000 rows on the test database took 14 minutes and now takes 40 seconds.\n- `src/export/schema.py:31`: the internal schema version went from 2 to 3. The export file format did not change.\n- `src/infra/logger.py:19`: the format of log records changed.\n- 38 tests were added and all passed. The export has not been run on the production database.\nThe user is a developer who will review this change. They asked: \"Where is this in the code, and what changed there?\" Write the reply to the user in English.",
+      "protected": [
+        "all three locations are given verbatim: `src/export/csv_writer.py:88`, `src/export/schema.py:31`, `src/infra/logger.py:19`",
+        "what changed at each location: batches of 5000 rows; internal schema version 2 to 3; log record format",
+        "14 minutes to 40 seconds for 200,000 rows on the test database",
+        "38 tests added and passed; the export has not been run on the production database"
+      ]
+    },
+    {
+      "id": "ru-tour-compare",
+      "language": "ru",
+      "prompt": "Контекст сессии. Сравнивали два способа передать задачу от агента-диспетчера агенту-исполнителю. Находки:\n- Способ А, `core/dispatch.ts:132`: задача передаётся одним текстом; исполнитель сам выделяет из него шаги.\n- Способ Б, `kernel/tasks.ts:205`: задача передаётся списком шагов с отметкой о выполнении каждого.\n- Способ А, `core/loop.ts:108`: цикл завершается, не проверяя, все ли шаги выполнены.\n- Способ Б, `kernel/report.ts:156`: итоговый отчёт собирается из отметок по шагам.\n- По способу Б прошли 24 теста. Способ А тестами не покрыт.\n- Качество результата, стоимость и скорость двух способов не сравнивали.\nПользователь спросил: «Какой способ надёжнее и почему?» Напиши ему ответ на русском.",
+      "protected": [
+        "the answer comes first: on the supplied findings way Б is the more reliable one",
+        "the reason is given as behaviour: Б hands over a list of steps with a completion mark for each and builds the final report from those marks; А hands over one text and its loop ends without checking that all steps are done",
+        "evidence scope kept: 24 tests passed for Б; А has no tests",
+        "stated once: result quality, cost and speed of the two ways were not compared",
+        "no file paths or line numbers"
+      ]
+    },
+    {
+      "id": "en-tour-compare",
+      "language": "en",
+      "prompt": "Session context. Two ways of handing a task from the dispatcher agent to the worker agent were compared. Findings:\n- Way A, `core/dispatch.ts:132`: the task is handed over as one text; the worker extracts the steps from it.\n- Way B, `kernel/tasks.ts:205`: the task is handed over as a list of steps, each with a completion mark.\n- Way A, `core/loop.ts:108`: the loop ends without checking that all steps are done.\n- Way B, `kernel/report.ts:156`: the final report is built from the step marks.\n- 24 tests passed for way B. Way A has no tests.\n- Result quality, cost and speed of the two ways were not compared.\nThe user asked: \"Which way is more reliable, and why?\" Write the reply to the user in English.",
+      "protected": [
+        "the answer comes first: on the supplied findings way B is the more reliable one",
+        "the reason is given as behaviour: B hands over a list of steps with a completion mark for each and builds the final report from those marks; A hands over one text and its loop ends without checking that all steps are done",
+        "evidence scope kept: 24 tests passed for B; A has no tests",
+        "stated once: result quality, cost and speed of the two ways were not compared",
+        "no file paths or line numbers"
+      ]
+    }
+  ]
+}
