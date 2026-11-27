@@ -1,5 +1,5 @@
 {
-  "note": "Patterns that locate the point of a reply for shape_metrics.py. Written from the prompts alone, before any reply was scored. A match marks where the reader meets the point; it does not check that the point is correct. Matching is case-sensitive; (?i) makes a pattern ignore case. null means the case has no single point to locate. deliverables: for cases that ask for a ready text, start matches the first words of the text itself and end its last words (the signature or trailer); words before the first start match and after the last end match are wrapper. null end means the text has no fixed last words. The en-notice end was widened on 2026-10-29 after the quality run: all six replies signed 'Home Service property management', and the first key counted the last two words as wrapper.",
+  "note": "Patterns that locate the point of a reply for shape_metrics.py. Written from the prompts alone, before any reply was scored. A match marks where the reader meets the point; it does not check that the point is correct. Matching is case-sensitive; (?i) makes a pattern ignore case. null means the case has no single point to locate. deliverables: for cases that ask for a ready text, start matches the first words of the text itself and end its last words (the signature or trailer); words before the first start match and after the last end match are wrapper. null end means the text has no fixed last words. The en-notice end was widened on 2026-10-29 after the quality run: all six replies signed 'Home Service property management', and the first key counted the last two words as wrapper. The mixed-language, estimate and code-tour keys were added on 2026-11-27 from the prompts, before any reply to those cases existed.",
   "keys": {
     "ru-definition": "(?i)предварительн|не окончательн|неокончательн|черновой вариант|рабоч(ая|ий) верси",
     "en-definition": "(?i)preliminary|not (yet )?final|unfinished|provisional|working version|early version|in progress",
@@ -54,7 +54,27 @@
     "ru-commit": null,
     "en-commit": null,
     "ru-notice": null,
-    "en-notice": null
+    "en-notice": null,
+    "ru-mixed-handoff": null,
+    "ru-mixed-revenue": "(?i)упал|сниз|сократ|меньше|просел|36[ \u00a0\u202f,.]?500",
+    "ru-mixed-literals": "(?i)refusing to merge unrelated histories|несвязанн|не связан",
+    "ru-mixed-pipeline": "(?i)не выкат|не выкач|не выполн|не состоял|не запус|не разв[её]рн|пропущен|останов|нет (одобрения|согласования|подтверждения)|без (одобрения|согласования|подтверждения)|жд[её]т (одобрения|согласования|подтверждения)",
+    "en-mixed-notes": "(?i)(3|three) of (the )?40|region code",
+    "en-mixed-label": "Сохранить и выйти|(?i:save and (exit|quit|leave))",
+    "ru-estimate-alloc": "252[ \u00a0\u202f.,]?000|252 тыс",
+    "en-estimate-alloc": "(?i)252[ \u00a0\u202f,.]?000|252 ?k\\b|252 thousand",
+    "ru-estimate-queries": "1[ \u00a0\u202f]?692|1[,.]7 ?с|1[,.]69",
+    "en-estimate-queries": "1[ \u00a0\u202f,]?692|1\\.7 ?s|1\\.69",
+    "ru-estimate-nobasis": "(?i)нельзя|невозможно|не из чего|не могу|не получится|не выйдет|нет данных|недостаточно|не хватает|не на что опереться",
+    "en-estimate-nobasis": "(?i)can'?t|cannot|not possible|impossible|no basis|not enough|nothing to|unable|no way to",
+    "ru-estimate-measured": "95[ \u00a0\u202f]?мс",
+    "en-estimate-measured": "95[ \u00a0\u202f]?ms",
+    "ru-tour-export": "(?i)40 сек|быстрее|ускор|14 мин",
+    "en-tour-export": "(?i)40 sec|faster|quicker|14 min",
+    "ru-tour-where": "csv_writer\\.py:88",
+    "en-tour-where": "csv_writer\\.py:88",
+    "ru-tour-compare": "(?:[Сс]пособ|[Вв]ариант) Б|\\bБ\\b",
+    "en-tour-compare": "(?:[Ww]ay|[Oo]ption|[Mm]ethod|[Aa]pproach) B\\b|\\bB is\\b"
   },
   "deliverables": {
     "ru-letter": {

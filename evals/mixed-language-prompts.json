@@ -1,0 +1,76 @@
+{
+  "cases": [
+    {
+      "id": "ru-mixed-handoff",
+      "language": "ru",
+      "prompt": "Контекст сессии. Рабочие заметки агента:\n«Worker handoff is one text blob, no structured fields. When the child process crashes, the busy flag is cleared and waiters are woken, but nothing goes through the progress channel. Turning narration off also turns off delivery of the final report. Idle timeout is 30 s.»\nПользователь спросил: «Что не так с передачей задач между агентами?» Напиши ему ответ на русском.",
+      "protected": [
+        "the prose is Russian: handoff, blob, busy, waiters, narration, idle and progress channel are not left as English words outside code formatting",
+        "three defects kept: the task is handed over as one unstructured text; a crash of the child process is not reported through the progress channel; turning the commentary off also turns off delivery of the final report",
+        "after a crash the busy flag is cleared and the waiting agents are woken",
+        "the 30 s idle timeout is not turned into a fourth defect",
+        "no invented cause, file or fix"
+      ]
+    },
+    {
+      "id": "ru-mixed-revenue",
+      "language": "ru",
+      "prompt": "Контекст сессии. Рабочие заметки агента:\n«Q3 summary: 3 enterprise customers churned, MRR went from $42,000 to $36,500. Onboarding takes 9 days on average. Root cause of the churn is unknown; no exit interviews yet.»\nПользователь спросил: «Что с выручкой за третий квартал?» Напиши ему ответ на русском.",
+      "protected": [
+        "the prose is Russian: churned, onboarding, root cause, exit interviews and enterprise are not left as English words",
+        "MRR may stay as an abbreviation when its meaning (monthly recurring revenue) is given",
+        "$42,000 to $36,500; 3 large customers left; onboarding takes 9 days on average",
+        "the cause of the departures is unknown and the departing customers have not been interviewed yet",
+        "no invented cause and no link between the 9 days and the departures"
+      ]
+    },
+    {
+      "id": "ru-mixed-literals",
+      "language": "ru",
+      "prompt": "Контекст сессии. Рабочие заметки агента:\n«Rebase failed. Command: `git pull --rebase origin main`. Error: `fatal: refusing to merge unrelated histories`. The GitHub Actions workflow `deploy.yml` did not start. Nothing was pushed.»\nПользователь спросил: «Почему не обновилась ветка?» Напиши ему ответ на русском.",
+      "protected": [
+        "the command `git pull --rebase origin main` and the error `fatal: refusing to merge unrelated histories` are kept verbatim; a translation of the error may be added beside it",
+        "GitHub Actions and `deploy.yml` are kept as names",
+        "the surrounding prose is Russian",
+        "the workflow did not start and nothing was pushed",
+        "no cause beyond the supplied error and no invented fix"
+      ]
+    },
+    {
+      "id": "ru-mixed-pipeline",
+      "language": "ru",
+      "prompt": "Контекст сессии. Вывод инструмента:\nbuild: passed in 4m 12s\ntests: 212 passed, 2 flaky retried and passed\ndeploy to staging: skipped, approval missing\nrollback: not needed\nПользователь спросил: «Что с выкаткой?» Напиши ему ответ на русском.",
+      "protected": [
+        "the prose is Russian: flaky, retried, skipped, approval, rollback and staging are not left as English words",
+        "the deploy to the test environment did not happen because the approval is missing",
+        "the build passed in 4 min 12 s; 212 tests passed; 2 unstable tests passed on a rerun",
+        "a rollback was not needed",
+        "a passed build is not reported as a finished deploy"
+      ]
+    },
+    {
+      "id": "en-mixed-notes",
+      "language": "en",
+      "prompt": "Session context. The agent's working notes:\n«Выгрузка отчёта падает на 3 из 40 филиалов: у них в справочнике нет кода региона. Остальные 37 выгружены. Причина пустых кодов неизвестна. Повторный запуск не помог.»\nThe user asked: \"What's wrong with the report export?\" Write the reply to the user in English.",
+      "protected": [
+        "the prose is English: no Russian words are left in it",
+        "the export fails for 3 of 40 branches; the other 37 are exported",
+        "the 3 branches have no region code in the reference list",
+        "why the codes are empty is unknown; a rerun did not help",
+        "no invented cause or fix"
+      ]
+    },
+    {
+      "id": "en-mixed-label",
+      "language": "en",
+      "prompt": "Session context. The agent's working notes:\n«Кнопка «Сохранить и выйти» на экране «Профиль» не сохраняет поле «Отчество». Остальные поля сохраняются. Проверено на версии 4.2.1.»\nThe user is a tester who works with the Russian interface. They asked: \"Which button is broken?\" Write the reply to the user in English.",
+      "protected": [
+        "the on-screen labels «Сохранить и выйти», «Профиль» and «Отчество» are quoted as they appear; a translation may be added beside each",
+        "the surrounding prose is English",
+        "only the «Отчество» field is not saved; the other fields are saved",
+        "checked on version 4.2.1",
+        "no invented cause"
+      ]
+    }
+  ]
+}

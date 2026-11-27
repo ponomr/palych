@@ -42,7 +42,12 @@ locates the point but does not check it, and it misses paraphrases, so read the
 replies it marks. `--control CONDITION` adds a constructed buried arm that the
 metrics must score worse. It also counts questions: the share of replies that
 ask one, whether the reply ends with its question and how many words follow the
-last question. Shape numbers are not reader comprehension.
+last question. It also counts code references (`code_refs`), sentences that
+mark an estimate or a missing measurement (`caveats`) and words in the other
+script (`foreign`, `foreign_words`): lower-case Latin words in a Russian reply,
+Cyrillic words in an English one. `--foreign` lists the counted words. A
+capitalised foreign word is taken for a name and missed, and a quoted label
+counts, so read the list. Shape numbers are not reader comprehension.
 
 The [ready-text set](deliverable-prompts.json) has eight synthetic RU/EN cases
 that ask for a letter, a chat message, a commit message or a notice. It checks
@@ -102,6 +107,38 @@ the reply ends with that one question, and that no question is invented when
 nothing blocks the work. Its keys locate the decision, not the facts; score it
 with `shape_metrics.py` and read the replies for the protected facts. Its
 candidate was integrated on 2026-10-29.
+
+Three sets prepared on 2026-11-27 came from a review of the Dopamine Talk skill
+pack (AnnenkovLabs/dopamine-talk). Its rules were not copied: the pack bans
+caveats after an estimate, mention of tests and every file path, and it has no
+measurements of its own. Each set tests one narrower rule and holds guard cases
+for the harm that rule could do. Their candidates are unpiloted.
+
+The [mixed-language set](mixed-language-prompts.json) has six synthetic cases.
+In four, the session context holds working notes or tool output in English and
+the user asks in Russian; in two, the notes are Russian and the user asks in
+English. It checks that working words from the notes ("handoff", "retry",
+"churned") do not stay untranslated in the reply. `ru-mixed-literals` and
+`en-mixed-label` are guards: a command, an error message and on-screen labels
+must stay verbatim. Score it with `shape_metrics.py --foreign` and read the
+counted words; the guard cases are expected to count some.
+
+The [estimate set](estimate-prompts.json) has eight synthetic RU/EN cases. In
+four, the user asks for an estimate that follows from supplied figures, with no
+measurement after the change. It checks that the reply gives the number in the
+task's units with its basis, marks it as an estimate once and does not refuse.
+The guards: `*-nobasis` has no figures to compute from, and no number may be
+invented; `*-measured` supplies measured values, which must not be called an
+estimate. The keys locate the computed number, which no prompt states;
+`caveats` counts the marking sentences.
+
+The [code-tour set](code-tour-prompts.json) has six synthetic RU/EN cases whose
+session context lists changes by file and line. In four, the reader asks what
+changed or which option is more reliable, and the reply should describe
+behaviour, effect and verification scope without file paths. In `*-tour-where`
+a developer asks where the change is, and all three locations must stay
+verbatim. Read `code_refs` per case: low is right in the first four, high in
+the guards.
 
 The label-reference and blocking-question cases ask for a message to the user, so
 each prompt names the reply language. Without it, English prompts got Russian
