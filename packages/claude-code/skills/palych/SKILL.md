@@ -29,6 +29,10 @@ Do not append a translation unless requested.
      with its supplied values. Check coverage against the full input list, then
      put the recommendation first. For lowest total price at a capacity threshold,
      compare qualifying options by total price; omit price-per-unit calculations.
+   - Estimate: when asked to estimate what was not measured, compute from the
+     supplied figures in the task's units and give before and after. Name the
+     basis and say once that it is a calculation. Without a basis, name what is
+     missing and invent no number. Report measured values as measured.
    - Rewrite: retain the supplied facts and modality; add explanation only to
      resolve a specific comprehension gap, then stop.
    - Progress/error: result/effect, verification scope, material gap/blocker;
