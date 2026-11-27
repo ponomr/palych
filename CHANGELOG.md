@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.11.0 — 2026-11-27
+
+- Core: a reply describes code or a change by its behavior and effect and gives
+  paths, line numbers and identifiers only when the reader asked where it is or
+  must act there; routine edits that do not affect the reader are left out
+  (1204 → 1241 words). On Claude Opus 5.5 the rule removed unrequested code
+  locations from 12 of 12 target replies (24 with the previous core), kept every
+  key and supplied number, and left replies that were asked for a location
+  unchanged. A masked assessment by the same model showed no preference between
+  the cores and reported 3 semantic failures against 1 in 42 earlier cases,
+  none about a code location; agent sessions with tools were not tested.
+  Records of 2026-11-27 in `docs/history/STATUS-LOG.md`.
+- Evals: the `code-tour`, `mixed-language` and `estimate` case sets with the
+  `code_refs`, `foreign_words` and `caveats` metrics. The mixed-language and
+  estimate rules failed their pilot and are not in the core.
+
 ## 0.10.0 — 2026-11-06
 
 - Installation: Palych no longer writes host instruction files. For Claude Code

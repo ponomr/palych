@@ -90,8 +90,8 @@ seven registered conditions: again 0 against 24 references with every key and
 number kept, guard replies unchanged, 0 assessor-reported semantic failures on
 the new cases against 2. The assessor showed no preference (6 against 5 of 12
 target pairs) and reported 3 semantic failures against 1 in the 42 earlier
-cases, none about a code location and within the registered allowance. It is
-not in the core.
+cases, none about a code location and within the registered allowance. The
+owner approved it on 2026-11-27; it is in the core since 0.11.0.
 
 ## Still open
 
@@ -123,9 +123,8 @@ not in the core.
   with the released checkout as its source; file-checked only, model use of
   the installed block is unverified. Single replies showed no switch (0 of 63
   on Sonnet, 0 of 126 on Opus).
-- The behavior-over-location candidate (PR #59) met its registered conditions
-  alone and under a masked assessment; integration into the core awaits the
-  owner's decision. Not tested: agent sessions with tools, which the rule
+- The behavior-over-location rule (core since 0.11.0) was tested on single
+  replies on one model. Not tested: agent sessions with tools, which the rule
   targets, other models, and whether 3 assessor-reported failures against 1 in
   the earlier sets is noise.
 - Reader comprehension testing with the intended audience.

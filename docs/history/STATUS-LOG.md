@@ -1,5 +1,15 @@
 # Palych — dated development records
 
+## Release 0.11.0: behavior over code location — 2026-11-27
+
+Owner decision (2026-11-27), given the stage 2 result below with its limits:
+integrate the rule. Step 3 of the core gains "Describe code or a change by its
+behavior and effect; give paths, line numbers and identifiers only when the
+reader asked where it is or must act there. Omit routine edits that do not
+affect the reader." The core is the text tested as `rule3` (1241 words,
+`35660ddc…52ec`). Nothing was re-measured for the release; installation on
+the owner's hosts is a separate task.
+
 ## Behavior-over-location rule alone, with masked evaluation — 2026-11-27
 
 Question: does the rule from PR #59 (`034f576`), without the two dropped
